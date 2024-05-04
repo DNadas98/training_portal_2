@@ -1,0 +1,22 @@
+services:
+  psql:
+    container_name: postgres-trainingportal-dev
+    image: postgres
+    environment:
+      POSTGRES_DB: trainingportaldb
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "56321:5432"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  db:

@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:56321/trainingportaldb
+    username: devuser
+    password: devpassword
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: ${BACKEND_SMTP_HOST}
+    port: ${BACKEND_SMTP_PORT}
+    username: ${BACKEND_SMTP_USERNAME}
+    password: ${BACKEND_SMTP_PASSWORD}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            port: ${BACKEND_SMTP_PORT}
+            class: javax.net.ssl.SSLSocketFactory
+          ssl:
+            enable: true
+            trust: ${BACKEND_SMTP_HOST}
+          auth: true
+
+logging:
+  level:
+    root: warn
+    net.dnadas: info
+    #org.springframework: trace
+    #org.hibernate.sql: trace
