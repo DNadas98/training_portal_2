@@ -16,7 +16,7 @@ export default function URLQueryPagination(props: URLQueryPaginationProps) {
   const searchParams = new URLSearchParams(location.search);
   const page = parseInt(searchParams.get('page') || '1', 10);
   const size = parseInt(searchParams.get('size') || '10', 10);
-  const localized=useLocalized();
+  const localized = useLocalized();
 
   useEffect(() => {
     searchParams.set('page', !isNaN(page) ? page.toString() : "1");

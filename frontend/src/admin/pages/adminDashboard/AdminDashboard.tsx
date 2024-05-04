@@ -1,5 +1,7 @@
 import {ChangeEvent, useEffect, useState} from "react";
-import {QuestionnaireResponseEditorDto} from "../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
+import {
+  QuestionnaireResponseEditorDto
+} from "../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
 import {GroupResponsePublicDto} from "../../../groups/dto/GroupResponsePublicDto.ts";
 import {ProjectResponsePublicDto} from "../../../projects/dto/ProjectResponsePublicDto.ts";
 import {useNotification} from "../../../common/notification/context/NotificationProvider.tsx";
@@ -12,10 +14,7 @@ import LoadingSpinner from "../../../common/utils/components/LoadingSpinner.tsx"
 import UserPreRegistrationReport from "./components/UserPreRegistrationReport.tsx";
 import {formatISO} from "date-fns";
 import useAuthFetch from "../../../common/api/hooks/useAuthFetch.tsx";
-import {Avatar, Button, Card, CardActions, CardHeader, Grid, Typography, useTheme} from "@mui/material";
-import {MailRounded} from "@mui/icons-material";
-import CompletionMailReport from "./components/CompletionMailReport.tsx";
-import {CompletionMailReportDto} from "../../dto/CompletionMailReportDto.ts";
+import {Grid} from "@mui/material";
 
 //TODO: add backend search filtering, pagination if necessary
 
@@ -47,7 +46,6 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const authJsonFetch = useAuthJsonFetch();
   const authFetch = useAuthFetch();
-  const theme = useTheme();
 
   const openErrorNotification = (message: string) => notification.openNotification({
     type: "error", vertical: "top", horizontal: "center", message: message
@@ -206,7 +204,7 @@ export default function AdminDashboard() {
         path: `admin/pre-register/users`,
         method: 'POST',
         body: formData
-      }).then(res => !res.error?res.json():res);
+      }).then(res => !res.error ? res.json() : res);
       if (!response || response.status > 399 || !response.data) {
         openErrorNotification(response?.error ?? defaultError);
         return;
@@ -228,7 +226,7 @@ export default function AdminDashboard() {
       },
       content: <UserPreRegistrationReport
         totalUsers={reportDto.totalUsers}
-        createdUsers={reportDto.createdUsers}
+        invitedUsers={reportDto.invitedUsers}
         updatedUsers={reportDto.updatedUsers}
         failedUsers={reportDto.failedUsers}/>
     });
@@ -269,38 +267,6 @@ export default function AdminDashboard() {
     setExpiresAt(newValue);
   }
 
-  async function handleSendCompletionMail() {
-    const defaultError = "Failed to send successful completion e-mails";
-    try {
-      setLoading(true);
-      if (!selectedGroup || !selectedProject || !selectedQuestionnaire) {
-        openErrorNotification("Select a group, project and questionnaire first!")
-        return;
-      }
-      const response = await authJsonFetch({
-        path: `admin/completion-mail/groups/${selectedGroup.groupId}/projects/${selectedProject.projectId}`,
-        method: "POST"
-      });
-      if (!response || !response.data || response.status > 399) {
-        openErrorNotification(response?.error ?? defaultError);
-        return;
-      }
-      const reportDto: CompletionMailReportDto = response.data;
-      dialog.openDialog({
-        oneActionOnly: true, confirmText: "Ok", onConfirm: () => {
-        },
-        content: <CompletionMailReport
-          totalUsers={reportDto.totalUsers}
-          successful={reportDto.successful}
-          failed={reportDto.failed}/>
-      });
-    } catch (e) {
-      openErrorNotification(defaultError);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return loading ? <LoadingSpinner/> :
     <Grid container justifyContent={"center"} alignItems={"center"} spacing={2}>
       <Grid item xs={10} sm={8}>
@@ -328,21 +294,5 @@ export default function AdminDashboard() {
           expiresAt={expiresAt}
           onExpiresAtChange={handleExpirationChange}/>
       </Grid>
-      <Grid item xs={10} sm={8}><Card>
-        <CardHeader title={"Send Successful Completion E-mails"}
-                    titleTypographyProps={{variant: "h6"}}
-                    subheader={<Typography variant={"body2"}>
-                      Please select the group, project and questionnaire in the form above!
-                    </Typography>}
-                    avatar={
-                      <Avatar variant={"rounded"} sx={{backgroundColor: theme.palette.primary.main}}>
-                        <MailRounded/>
-                      </Avatar>}/>
-        <CardActions>
-          <Button onClick={() => handleSendCompletionMail().then()}>
-            Send E-mails
-          </Button>
-        </CardActions>
-      </Card></Grid>
     </Grid>;
 }

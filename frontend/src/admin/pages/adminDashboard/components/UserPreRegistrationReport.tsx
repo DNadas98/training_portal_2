@@ -8,7 +8,7 @@ export default function UserPreRegistrationReport(reportDto: PreRegisterUsersRep
       <Typography>Total users: {reportDto.totalUsers}</Typography>
     </Grid>
     <Grid item xs={12}>
-      <Typography>Created users: {reportDto.createdUsers.length}</Typography>
+      <Typography>Invited users: {reportDto.invitedUsers.length}</Typography>
     </Grid>
     <Grid item xs={12}>
       <Typography>Updated existing users: {reportDto.updatedUsers.length}</Typography>

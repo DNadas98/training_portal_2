@@ -35,22 +35,6 @@ public class CsvUtilsService {
   }
 
   /**
-   * Creates a CSV file from the given data.
-   *
-   * @param data      The data to write
-   * @param delimiter The delimiter to use
-   * @param headers   The headers of the CSV file
-   * @return The CSV file as a byte array
-   */
-  public byte[] createCsv(List<List<String>> data, String delimiter, List<String> headers) {
-    StringBuilder csvBuilder = new StringBuilder(String.join(delimiter, headers) + "\n");
-    for (List<String> row : data) {
-      csvBuilder.append(String.join(delimiter, row)).append("\n");
-    }
-    return csvBuilder.toString().getBytes(StandardCharsets.UTF_8);
-  }
-
-  /**
    * Writes CSV formatted data directly to the given OutputStream.
    *
    * @param data         The data to write

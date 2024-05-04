@@ -30,12 +30,12 @@ public class SecurityConfig {
 
   /**
    * Unique field of {@link UserDetailsService} that represents the subject is always called
-   * "username", in our application it is the email.
+   * "username", in our application it is the username.
    */
   @Bean
   public UserDetailsService userDetailsService(ApplicationUserDao applicationUserDao) {
     return username -> (UserDetails) applicationUserDao
-      .findByEmail(username)
+      .findByUsernameAndEnabled(username)
       .orElseThrow(UnauthorizedException::new);
   }
 

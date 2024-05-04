@@ -67,7 +67,13 @@ export default function GroupLayout() {
 
   return (
     <Box
-      sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh"}}>
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh"
+      }}>
       <GroupHeader group={group} project={project} permissionsLoading={permissionsLoading}
                    groupPermissions={groupPermissions} projectPermissions={projectPermissions}/>
       <Box maxWidth={1300} width={"100%"} sx={{

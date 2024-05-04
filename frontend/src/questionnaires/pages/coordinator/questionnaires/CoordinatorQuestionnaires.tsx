@@ -35,7 +35,10 @@ export default function CoordinatorQuestionnaires() {
       });
       if (!response?.status || response.status > 399 || !response?.data) {
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: `${response?.error ?? defaultError}`
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: `${response?.error ?? defaultError}`
         });
         return;
       }

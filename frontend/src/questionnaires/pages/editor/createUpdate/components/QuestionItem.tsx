@@ -18,7 +18,8 @@ import {memo, useCallback, useState} from "react";
 import {QuestionRequestDto} from "../../../../dto/QuestionRequestDto.ts";
 import {AnswerRequestDto} from "../../../../dto/AnswerRequestDto.ts";
 import {v4 as uuidv4} from "uuid";
-import RichTextEditorControlled from "../../../../../common/richTextEditor/RichTextEditorControlled.tsx";
+import RichTextEditorControlled
+  from "../../../../../common/richTextEditor/RichTextEditorControlled.tsx";
 import useLocalized from "../../../../../common/localization/hooks/useLocalized.tsx";
 
 interface QuestionItemProps {
@@ -103,7 +104,7 @@ const QuestionItem = memo((props: QuestionItemProps) => {
                                         onChange={handleTextChange}/>
             </Stack>
             : <Stack spacing={2} direction={"row"} alignItems={"center"}>
-              <Typography whiteSpace={"nowrap"} sx={{wordBreak:"keep-all"}} variant={"body1"}>
+              <Typography whiteSpace={"nowrap"} sx={{wordBreak: "keep-all"}} variant={"body1"}>
                 {props.question.order}:
               </Typography>
               <RichTextEditorControlled id={props.question.tempId}

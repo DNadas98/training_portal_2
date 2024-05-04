@@ -102,7 +102,8 @@ export default function PermissionProvider() {
     loadTaskPermissions().then();
   }, [taskId]);
 
-  return <PermissionContext.Provider value={{loading, groupPermissions, projectPermissions, taskPermissions}}>
+  return <PermissionContext.Provider
+    value={{loading, groupPermissions, projectPermissions, taskPermissions}}>
     <Outlet/>
   </PermissionContext.Provider>
 }

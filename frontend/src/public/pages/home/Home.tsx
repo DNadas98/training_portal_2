@@ -1,10 +1,4 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid
-} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Grid} from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
 import {useAuthentication} from "../../../authentication/hooks/useAuthentication.ts";
 import useLocalized from "../../../common/localization/hooks/useLocalized.tsx";

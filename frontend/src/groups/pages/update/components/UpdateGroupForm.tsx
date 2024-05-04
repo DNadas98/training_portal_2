@@ -4,7 +4,8 @@ import {DomainOutlined} from "@mui/icons-material";
 import GroupNameInput from "../../../components/GroupNameInput.tsx";
 import {GroupResponsePrivateDto} from "../../../dto/GroupResponsePrivateDto.ts";
 import GroupDescriptionInput from "../../../components/GroupDescriptionInput.tsx";
-import RichTextEditorUncontrolled from "../../../../common/richTextEditor/RichTextEditorUncontrolled.tsx";
+import RichTextEditorUncontrolled
+  from "../../../../common/richTextEditor/RichTextEditorUncontrolled.tsx";
 
 interface UpdateGroupFormProps {
   group: GroupResponsePrivateDto;

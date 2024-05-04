@@ -15,14 +15,10 @@ import DraggableQuestionsList from "./DraggableQuestionsList.tsx";
 import {QuestionRequestDto} from "../../../../dto/QuestionRequestDto.ts";
 import {FormEventHandler, MouseEventHandler, useCallback, useState} from "react";
 import {QuestionnaireStatus} from "../../../../dto/QuestionnaireStatus.ts";
-import RichTextDynamicEditor from "../../../../../common/richTextEditor/RichTextDynamicEditor.tsx";
-import RichTextEditorControlled from "../../../../../common/richTextEditor/RichTextEditorControlled.tsx";
+import RichTextEditorControlled
+  from "../../../../../common/richTextEditor/RichTextEditorControlled.tsx";
 
 interface QuestionnaireEditorFormProps {
-  onStatusChange(newStatus: QuestionnaireStatus): void;
-
-  onNameChange(newName: string): void;
-
   name: string | undefined,
   setName: (name: string) => void,
   description: string | undefined,
@@ -33,6 +29,10 @@ interface QuestionnaireEditorFormProps {
   handleSubmit: FormEventHandler<HTMLFormElement> | undefined,
   handleBackClick: MouseEventHandler<HTMLButtonElement> | undefined,
   isUpdatePage: boolean,
+
+  onStatusChange(newStatus: QuestionnaireStatus): void;
+
+  onNameChange(newName: string): void;
 
   onUpdateQuestions(updatedQuestions: QuestionRequestDto[]): any,
 }
@@ -71,7 +71,8 @@ export default function QuestionnaireEditorForm(props: QuestionnaireEditorFormPr
                     variant={"outlined"}
                     onChange={handleNameUpdate}
                   />
-                  <RichTextEditorControlled id={"questionnaire-description"} value={props.description ?? ""}
+                  <RichTextEditorControlled id={"questionnaire-description"}
+                                            value={props.description ?? ""}
                                             onChange={(currentValue: string) => props.setDescription(currentValue)}/>
                   {props.isUpdatePage
                     ? <Grid container spacing={2} alignItems={"center"}>
@@ -95,7 +96,8 @@ export default function QuestionnaireEditorForm(props: QuestionnaireEditorFormPr
                 </Stack>
               </CardContent>
             </Card>
-            <DraggableQuestionsList questionsLength={props.questions.length} questions={props.questions}
+            <DraggableQuestionsList questionsLength={props.questions.length}
+                                    questions={props.questions}
                                     onUpdateQuestions={props.onUpdateQuestions}/>
             <Card variant={"outlined"} sx={{width: "100%"}}>
               <CardContent>

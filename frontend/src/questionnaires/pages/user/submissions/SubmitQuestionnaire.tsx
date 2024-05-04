@@ -5,7 +5,18 @@ import {useNotification} from "../../../../common/notification/context/Notificat
 import {isValidId} from "../../../../common/utils/isValidId.ts";
 import {QuestionnaireResponseDetailsDto} from "../../../dto/QuestionnaireResponseDetailsDto.ts";
 import LoadingSpinner from "../../../../common/utils/components/LoadingSpinner.tsx";
-import {Box, Button, Card, CardActions, CardContent, Checkbox, Grid, Radio, Stack, Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Checkbox,
+  Grid,
+  Radio,
+  Stack,
+  Typography
+} from "@mui/material";
 import {useDialog} from "../../../../common/dialog/context/DialogProvider.tsx";
 import {QuestionType} from "../../../dto/QuestionType.ts";
 import {QuestionnaireSubmissionRequestDto} from "../../../dto/QuestionnaireSubmissionRequestDto.ts";
@@ -146,7 +157,10 @@ export default function SubmitQuestionnaire() {
           && !question.checkedAnswers.length;
       })) {
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: localized("questionnaire.all_radio_button")
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: localized("questionnaire.all_radio_button")
         });
         return;
       }
@@ -158,7 +172,10 @@ export default function SubmitQuestionnaire() {
       if (!response?.status || response.status > 399 || !response?.data) {
         setQuestionnaire(undefined);
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: response?.error ?? defaultError
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: response?.error ?? defaultError
         });
         return;
       }
@@ -178,10 +195,13 @@ export default function SubmitQuestionnaire() {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
       navigateBack();
       dialog.openDialog({
-        oneActionOnly: true, confirmText: localized("common.close"), content: <QuestionnaireSubmissionDetails
+        oneActionOnly: true,
+        confirmText: localized("common.close"),
+        content: <QuestionnaireSubmissionDetails
           submission={submissionDetailsResponse.data}/>,
         onConfirm: () => {
-        }, blockScreen: true
+        },
+        blockScreen: true
       });
     } catch (e) {
       notification.openNotification({
@@ -261,7 +281,8 @@ export default function SubmitQuestionnaire() {
               <Card key={question.id}>
                 <CardContent>
                   <Stack direction={"row"} spacing={1} alignItems={"baseline"}>
-                    <Typography whiteSpace={"nowrap"} sx={{wordBreak:"keep-all"}}>{question.order}.</Typography>
+                    <Typography whiteSpace={"nowrap"}
+                                sx={{wordBreak: "keep-all"}}>{question.order}.</Typography>
                     <RichTextDisplay content={question.text}/>
                   </Stack>
                   <Typography variant={"body2"} gutterBottom>
@@ -285,10 +306,12 @@ export default function SubmitQuestionnaire() {
                       </Grid>
                       <Grid item xs={true} textAlign={"left"}>
                         <Stack spacing={0.5} direction={"row"}>
-                          <Typography whiteSpace={"nowrap"} sx={{wordBreak:"keep-all"}} variant={"body1"}>
+                          <Typography whiteSpace={"nowrap"} sx={{wordBreak: "keep-all"}}
+                                      variant={"body1"}>
                             {String.fromCharCode(answer.order + 64)}:
                           </Typography>
-                          <Typography variant={"body1"} gutterBottom>{answer.text}</Typography>
+                          <Typography variant={"body1"}
+                                      gutterBottom>{answer.text}</Typography>
                         </Stack>
                       </Grid>
                     </Grid>

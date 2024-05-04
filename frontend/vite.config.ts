@@ -9,8 +9,8 @@ export default defineConfig(({mode}) => {
   return {
     server: { /* only applies to the DEVELOPMENT vite server */
       https: {
-        key:"../ssl/fake-ssl-key",
-        cert:"../ssl/fake-ssl-cert"
+        key: "../ssl/fake-ssl-key",
+        cert: "../ssl/fake-ssl-cert"
       },
       proxy: {
         "/api": {

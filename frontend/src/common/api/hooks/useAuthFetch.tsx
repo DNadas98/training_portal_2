@@ -22,14 +22,14 @@ export default function useAuthFetch() {
       message:
         errorMessage
         ?? httpResponse.status === 403
-          ? localized("common.error.auth.access_denied") :  localized("common.error.auth.unauthorized")
+          ? localized("common.error.auth.access_denied") : localized("common.error.auth.unauthorized")
     });
     return await logout();
   }
-  const authFetch = async (request: ApiRequestDto):Promise<any>=> {
+  const authFetch = async (request: ApiRequestDto): Promise<any> => {
     const defaultError = localized("common.error.fetch.unknown");
     try {
-      const requestConfig = getRequestConfig(request, locale, request.contentType??null);
+      const requestConfig = getRequestConfig(request, locale, request.contentType ?? null);
       const accessToken = authentication.getAccessToken();
       if (!accessToken) {
         throw new Error("Unauthorized");
@@ -57,7 +57,7 @@ export default function useAuthFetch() {
         if (httpResponse.status === 401) {
           responseObject = await httpResponse?.json();
           return await notifyAndLogout(httpResponse, responseObject?.error);
-        }else {
+        } else {
           return responseObject;
         }
       }

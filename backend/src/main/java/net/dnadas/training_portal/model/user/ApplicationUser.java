@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import net.dnadas.training_portal.model.auth.GlobalRole;
 import net.dnadas.training_portal.model.group.UserGroup;
 import net.dnadas.training_portal.model.group.project.Project;
@@ -33,28 +34,23 @@ public class ApplicationUser implements UserDetails {
   private String username;
 
   @Column(nullable = false)
-  private String fullName;
-
-  @Column(nullable = false, unique = true)
-  private String email;
-
-  @Column(nullable = false)
   private String password;
 
   @Column(nullable = true)
-  private String currentCoordinatorFullName;
+  @ToString.Exclude
+  private String coordinatorUsername;
 
   @Column(nullable = true)
-  private String dataPreparatorFullName;
+  @ToString.Exclude
+  private String dataPreparatorUsername;
 
   @Column(nullable = true)
+  @ToString.Exclude
   private Boolean hasExternalTestQuestionnaire;
 
   @Column(nullable = true)
+  @ToString.Exclude
   private Boolean hasExternalTestFailure;
-
-  @Column(nullable = false)
-  private Boolean receivedSuccessfulCompletionEmail = false;
 
   @Column(nullable = false)
   private boolean expired;
@@ -128,15 +124,13 @@ public class ApplicationUser implements UserDetails {
   @JoinColumn(name = "active_questionnaire_id")
   private Questionnaire activeQuestionnaire = null;
 
-  public ApplicationUser(String username, String email, String password, String fullName) {
+  public ApplicationUser(String username, String password) {
     this.username = username.trim();
-    this.email = email.trim();
     this.password = password;
-    this.fullName = fullName.trim();
+    this.enabled = true;
     this.expired = false;
     this.locked = false;
     this.credentialsExpired = false;
-    this.enabled = true;
     globalRoles.add(GlobalRole.USER);
   }
 
@@ -150,10 +144,6 @@ public class ApplicationUser implements UserDetails {
 
   // UserDetails
 
-  public String getActualUsername() {
-    return this.username;
-  }
-
   /**
    * Returns the authorities granted to the user. Cannot return <code>null</code>.
    *
@@ -166,23 +156,18 @@ public class ApplicationUser implements UserDetails {
   }
 
   /**
-   * Returns the newPassword used to authenticate the user.
+   * Returns the password used to authenticate the user.
    *
-   * @return the newPassword
+   * @return the password
    */
   @Override
   public String getPassword() {
     return this.password;
   }
 
-  /**
-   * @return THE E-MAIL ADDRESS !
-   * @warning DO NOT USE THIS FOR THE USERNAME, USE {@code getActualUsername}!<br/>
-   * This has to be called {@code getUsername} for Spring Security {@link UserDetails}
-   */
   @Override
   public String getUsername() {
-    return this.email;
+    return this.username;
   }
 
   /**

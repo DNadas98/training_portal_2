@@ -26,7 +26,10 @@ export default function GroupHeader(props: GroupHeaderProps) {
   const localized = useLocalized();
 
   function getGroupMenuItems() {
-    const items: IMenuItem[] = [{path: `/groups/${props?.group?.groupId}`, title: localized("menus.group_dashboard")},
+    const items: IMenuItem[] = [{
+      path: `/groups/${props?.group?.groupId}`,
+      title: localized("menus.group_dashboard")
+    },
       {path: `/groups/${props?.group?.groupId}/projects`, title: localized("menus.projects")}];
     if (props.groupPermissions.includes(PermissionType.GROUP_EDITOR)) {
       items.push({
@@ -36,7 +39,7 @@ export default function GroupHeader(props: GroupHeaderProps) {
     if (props.groupPermissions.includes(PermissionType.GROUP_ADMIN)) {
       items.push({
         path: `/groups/${props?.group?.groupId}/requests`, title: "Join Requests"
-      },{
+      }, {
         path: `/groups/${props?.group?.groupId}/pre-register`, title: "Manage Members"
       })
     }

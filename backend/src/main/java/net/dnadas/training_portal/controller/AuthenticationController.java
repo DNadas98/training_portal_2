@@ -5,8 +5,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import net.dnadas.training_portal.dto.auth.*;
+import net.dnadas.training_portal.exception.auth.InvalidCredentialsException;
 import net.dnadas.training_portal.exception.auth.UnauthorizedException;
 import net.dnadas.training_portal.service.auth.AuthenticationService;
+import net.dnadas.training_portal.service.user.PreRegistrationService;
 import net.dnadas.training_portal.service.utils.security.CookieService;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -15,42 +17,54 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
   private final AuthenticationService authenticationService;
+  private final PreRegistrationService preRegistrationService;
   private final CookieService cookieService;
   private final MessageSource messageSource;
 
   @PostMapping("/register")
   public ResponseEntity<?> register(
-    @RequestBody @Valid RegisterRequestDto request, Locale locale) throws Exception {
-    authenticationService.sendRegistrationVerificationEmail(
-      request, locale);
-    return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-      "message",
-      messageSource.getMessage("auth.registration.started", null, locale)));
+    @RequestBody @Valid RegisterRequestDto dto, HttpServletResponse response) {
+    authenticationService.register(dto);
+    return loginExistingUser(response, dto.username(), dto.password(), HttpStatus.CREATED);
   }
 
-  @PostMapping("/reset-password")
-  public ResponseEntity<?> resetPassword(
-    @RequestBody @Valid PasswordResetRequestDto requestDto, Locale locale) throws Exception {
-    authenticationService.sendPasswordResetVerificationEmail(requestDto, locale);
-    return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-      "message",
-      messageSource.getMessage("auth.password.reset.started", null, locale)));
+  @PostMapping("/preregistration-complete")
+  public ResponseEntity<?> completePreRegistration(
+    @RequestBody @Valid PreRegisterCompleteRequestDto dto, HttpServletResponse response,
+    @RequestParam String code) {
+    final UUID invitationCodeUuid;
+    try {
+      invitationCodeUuid = UUID.fromString(code);
+    } catch (IllegalArgumentException e) {
+      throw new InvalidCredentialsException();
+    }
+    preRegistrationService.completePreRegistration(dto, invitationCodeUuid);
+    return loginExistingUser(response, dto.username(), dto.password(), HttpStatus.CREATED);
+
   }
 
   @PostMapping("/login")
   public ResponseEntity<?> login(
     @RequestBody @Valid LoginRequestDto loginRequest, HttpServletResponse response) {
-    LoginResponseDto loginResponse = authenticationService.login(loginRequest);
+    return loginExistingUser(response, loginRequest.username(), loginRequest.password(),
+      HttpStatus.OK);
+  }
+
+  private ResponseEntity<?> loginExistingUser(
+    HttpServletResponse response, String username, String password, HttpStatus status) {
+    LoginResponseDto loginResponse = authenticationService.login(
+      new LoginRequestDto(username, password));
     String refreshToken = authenticationService.getNewRefreshToken(
-      new TokenPayloadDto(loginResponse.getUserInfo().email()));
+      new TokenPayloadDto(loginResponse.getUserInfo().username()));
     cookieService.addRefreshCookie(refreshToken, response);
-    return ResponseEntity.status(HttpStatus.OK).body(Map.of("data", loginResponse));
+    return ResponseEntity.status(status).body(Map.of("data", loginResponse));
   }
 
   @GetMapping("/refresh")
@@ -66,15 +80,12 @@ public class AuthenticationController {
 
   @GetMapping("/logout")
   public ResponseEntity<?> logout(
-    @CookieValue(required = false) String jwt, HttpServletResponse response,
-    Locale locale) {
+    @CookieValue(required = false) String jwt, HttpServletResponse response, Locale locale) {
     if (jwt == null) {
       return ResponseEntity.noContent().build();
     }
     cookieService.clearRefreshCookie(response);
     return ResponseEntity.status(HttpStatus.OK).body(
-      Map.of(
-        "message",
-        messageSource.getMessage("auth.logout.success", null, locale)));
+      Map.of("message", messageSource.getMessage("auth.logout.success", null, locale)));
   }
 }

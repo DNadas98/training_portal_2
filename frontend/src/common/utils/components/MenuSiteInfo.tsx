@@ -1,4 +1,4 @@
-import {Divider, Menu, MenuItem, Link, Typography, Tooltip, IconButton} from "@mui/material";
+import {Divider, IconButton, Link, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import {MouseEventHandler, useState} from "react";
 import siteConfig from "../../config/siteConfig.ts";
 import useLocalized from "../../localization/hooks/useLocalized.tsx";
@@ -31,7 +31,13 @@ export default function MenuSiteInfo() {
         </Typography>}>
         <IconButton
           onClick={handleMenu}
-          sx={{mr:1,color:"inherit",wordBreak: "break-all", paddingTop: 1, backgroundColor: "transparent"}}
+          sx={{
+            mr: 1,
+            color: "inherit",
+            wordBreak: "break-all",
+            paddingTop: 1,
+            backgroundColor: "transparent"
+          }}
         >
           <InfoOutlined/>
         </IconButton>
@@ -58,10 +64,11 @@ export default function MenuSiteInfo() {
         <Typography paddingLeft={2} paddingRight={2} paddingTop={1} paddingBottom={1}>
           {localized("site.administrator")}
         </Typography>
-        <Typography variant={"body2"} paddingLeft={2} paddingRight={2} paddingTop={1} paddingBottom={1}>
+        <Typography variant={"body2"} paddingLeft={2} paddingRight={2} paddingTop={1}
+                    paddingBottom={1}>
           {locale?.startsWith("hu")
-          ? config.adminInfo.name_hu
-          : config.adminInfo.name_en}
+            ? config.adminInfo.name_hu
+            : config.adminInfo.name_en}
         </Typography>
         <MenuItem>
           <CopyButton text={config.adminInfo.mail}/>
@@ -72,8 +79,8 @@ export default function MenuSiteInfo() {
         </Typography>
         <Typography paddingLeft={2} paddingRight={2} paddingTop={1} paddingBottom={1}>
           {locale?.startsWith("hu")
-          ? config.developerInfo.name_hu
-          : config.developerInfo.name_en}
+            ? config.developerInfo.name_hu
+            : config.developerInfo.name_en}
         </Typography>
         <MenuItem>
           <CopyButton text={config.developerInfo.mail}/>

@@ -90,7 +90,7 @@ public class ProjectRequestService {
     request.setUpdatedAt(Instant.now());
     if (request.getStatus().equals(RequestStatus.APPROVED)) {
       projectAdminService.assignMember(
-        groupId, projectId, request.getApplicationUser().getActualUsername());
+        groupId, projectId, request.getApplicationUser().getUsername());
       requestDao.delete(request);
     } else {
       requestDao.save(request);

@@ -1,8 +1,20 @@
-import {Card, CardContent, CardHeader, Checkbox, Grid, Radio, Stack, Typography, useTheme} from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Checkbox,
+  Grid,
+  Radio,
+  Stack,
+  Typography,
+  useTheme
+} from "@mui/material";
 import RichTextDisplay from "../../../../../common/richTextEditor/RichTextDisplay.tsx";
 import {SubmittedAnswerStatus} from "../../../../dto/SubmittedAnswerStatus.ts";
 import {QuestionType} from "../../../../dto/QuestionType.ts";
-import {QuestionnaireSubmissionResponseDetailsDto} from "../../../../dto/QuestionnaireSubmissionResponseDetailsDto.ts";
+import {
+  QuestionnaireSubmissionResponseDetailsDto
+} from "../../../../dto/QuestionnaireSubmissionResponseDetailsDto.ts";
 import QuestionnaireSubmissionCard from "./QuestionnaireSubmissionCard.tsx";
 import useLocalized from "../../../../../common/localization/hooks/useLocalized.tsx";
 
@@ -23,7 +35,8 @@ const QuestionnaireSubmissionDetails = (props: QuestionnaireSubmissionDetailsPro
           <CardContent>
             <Stack spacing={2}>
               <Stack direction={"row"} spacing={1} alignItems={"baseline"}>
-                <Typography whiteSpace={"nowrap"} sx={{wordBreak:"keep-all"}}>{question.order}.</Typography>
+                <Typography whiteSpace={"nowrap"}
+                            sx={{wordBreak: "keep-all"}}>{question.order}.</Typography>
                 <RichTextDisplay content={question.text}/>
               </Stack>
               <Typography variant={"body2"}>
@@ -52,7 +65,8 @@ const QuestionnaireSubmissionDetails = (props: QuestionnaireSubmissionDetailsPro
                   </Grid>
                   <Grid item xs={true}>
                     <Stack spacing={0.5} direction={"row"}>
-                      <Typography whiteSpace={"nowrap"} sx={{wordBreak:"keep-all"}} variant={"body1"}>
+                      <Typography whiteSpace={"nowrap"} sx={{wordBreak: "keep-all"}}
+                                  variant={"body1"}>
                         {String.fromCharCode(answer.order + 64)}:
                       </Typography>
                       <Typography variant={"body1"} gutterBottom>{answer.text}</Typography>

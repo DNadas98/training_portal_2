@@ -39,31 +39,28 @@ public class QuestionnaireStatisticsService {
 
   private static List<String> getQuestionnaireStatisticsColumns(Locale locale) {
     if (locale.getLanguage().equals("hu")) {
-      return List.of("LAKOS azonosító", "Összeíró neve", "Összeíró e-mail címe",
-        "Teszt összpontszám", "Max. pont", "Max. dátum", "Kitöltések száma", "Szervező neve",
-        "Adatelőkészítő neve", "Gyakorló kérdőív", "Gyakorló meghiúsulás", "Értesítő e-mail");
+      return List.of("LAKOS azonosító",
+        "Teszt összpontszám", "Max. pont", "Max. dátum", "Kitöltések száma", "Szervező azonosítója",
+        "Adatelőkészítő azonosítója", "Gyakorló kérdőív", "Gyakorló meghiúsulás");
     }
-    return List.of("Identifier", "Full Name", "E-mail Address", "Questionnaire Total Points",
+    return List.of("Identifier", "Questionnaire Total Points",
       "Best Submission Received Points", "Best Submission Date", "Total Submissions", "Coordinator",
-      "Coordinator", "Data Preparator", "External Test Questionnaire", "External Test Failure",
-      "Completion Email");
+      "Coordinator", "Data Preparator", "External Test Questionnaire", "External Test Failure");
   }
 
   private static List<Function<QuestionnaireSubmissionStatsInternalDto, Object>> getQuestionnaireStatisticsValueExtractors(
     ZoneId timeZoneId) {
-    return List.of(QuestionnaireSubmissionStatsInternalDto::username,
-      QuestionnaireSubmissionStatsInternalDto::fullName,
-      QuestionnaireSubmissionStatsInternalDto::email,
+    return List.of(
+      QuestionnaireSubmissionStatsInternalDto::username,
       QuestionnaireSubmissionStatsInternalDto::questionnaireMaxPoints,
       QuestionnaireSubmissionStatsInternalDto::maxPointSubmissionReceivedPoints,
       dto -> dto.maxPointSubmissionCreatedAt() == null ? null :
         dateTimeFormatter.format(dto.maxPointSubmissionCreatedAt().atZone(timeZoneId)),
       QuestionnaireSubmissionStatsInternalDto::submissionCount,
-      QuestionnaireSubmissionStatsInternalDto::currentCoordinatorFullName,
-      QuestionnaireSubmissionStatsInternalDto::currentDataPreparatorFullName,
+      QuestionnaireSubmissionStatsInternalDto::coordinatorUsername,
+      QuestionnaireSubmissionStatsInternalDto::dataPreparatorUsername,
       QuestionnaireSubmissionStatsInternalDto::hasExternalTestQuestionnaire,
-      QuestionnaireSubmissionStatsInternalDto::hasExternalTestFailure,
-      QuestionnaireSubmissionStatsInternalDto::receivedSuccessfulCompletionEmail);
+      QuestionnaireSubmissionStatsInternalDto::hasExternalTestFailure);
   }
 
   @Transactional(readOnly = true)

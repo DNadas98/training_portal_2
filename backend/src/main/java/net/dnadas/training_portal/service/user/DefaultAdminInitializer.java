@@ -21,15 +21,12 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class DefaultAdminInitializer {
-  private static final String fullName = "System Administrator";
   private final ApplicationUserDao applicationUserDao;
   private final PasswordEncoder passwordEncoder;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
   private final Validator validator;
   @Value("${BACKEND_DEFAULT_ADMIN_USERNAME}")
   private String username;
-  @Value("${BACKEND_DEFAULT_ADMIN_EMAIL}")
-  private String email;
   @Value("${BACKEND_DEFAULT_ADMIN_PASSWORD}")
   private String password;
 
@@ -41,7 +38,7 @@ public class DefaultAdminInitializer {
       logger.info("User accounts already exist, skipping system administrator initialization");
       return;
     }
-    RegisterRequestDto dto = new RegisterRequestDto(username, email, password, fullName);
+    RegisterRequestDto dto = new RegisterRequestDto(username, password);
     List<FieldError> fieldErrors = validator.validateObject(dto).getFieldErrors();
     if (!fieldErrors.isEmpty()) {
       CustomValidationException e = new CustomValidationException(fieldErrors);
@@ -50,8 +47,7 @@ public class DefaultAdminInitializer {
     }
 
     String hashedPassword = passwordEncoder.encode(dto.password());
-    ApplicationUser defaultAdminUser = new ApplicationUser(dto.username(), dto.email(),
-      hashedPassword, fullName);
+    ApplicationUser defaultAdminUser = new ApplicationUser(dto.username(), hashedPassword);
     defaultAdminUser.addGlobalRole(GlobalRole.ADMIN);
     applicationUserDao.save(defaultAdminUser);
     logger.info("Default system administrator account initialized successfully");

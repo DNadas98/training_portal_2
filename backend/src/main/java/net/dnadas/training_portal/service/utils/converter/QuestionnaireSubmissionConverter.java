@@ -63,11 +63,8 @@ public class QuestionnaireSubmissionConverter {
       dto.questionnaireName(), dto.questionnaireMaxPoints(), dto.maxPointSubmissionId(),
       maxPointSubmissionCreatedAtDate,
       dto.maxPointSubmissionReceivedPoints(),
-      dto.userId(), dto.username(), dto.fullName(), dto.email(),
-      dto.currentCoordinatorFullName(),
-      dto.currentDataPreparatorFullName(),
+      dto.userId(), dto.username(),
       dto.hasExternalTestQuestionnaire(), dto.hasExternalTestFailure(),
-      dto.receivedSuccessfulCompletionEmail(),
       dto.submissionCount());
   }
 

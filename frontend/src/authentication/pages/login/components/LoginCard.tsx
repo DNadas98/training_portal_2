@@ -1,10 +1,10 @@
 import {Avatar, Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/material";
 import {Lock} from "@mui/icons-material";
-import EmailInput from "../../../components/inputs/EmailInput.tsx";
 import PasswordInput from "../../../components/inputs/PasswordInput.tsx";
 import {FormEvent} from "react";
 import {Link as RouterLink} from "react-router-dom";
 import useLocalized from "../../../../common/localization/hooks/useLocalized.tsx";
+import UsernameInput from "../../../components/inputs/UsernameInput.tsx";
 
 interface LoginCardProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
@@ -44,7 +44,7 @@ export default function LoginCard({onSubmit}: LoginCardProps) {
                     sx={{borderColor: "secondary.main"}}>
                 <form onSubmit={onSubmit}>
                   <Stack spacing={2}>
-                    <EmailInput/>
+                    <UsernameInput/>
                     <PasswordInput autoComplete={"current-password"}/>
                     <Button type={"submit"}
                             variant={"contained"}>
@@ -58,12 +58,6 @@ export default function LoginCard({onSubmit}: LoginCardProps) {
                   <Divider sx={{
                     marginBottom: 2
                   }}/>
-                  <Button variant={"text"}
-                          component={RouterLink}
-                          to={"/password-reset"}
-                          sx={{textTransform: "none"}}>
-                    {getLocalized("pages.sign_in.forgot_password_button")}
-                  </Button>
                   <Button variant={"text"}
                           component={RouterLink}
                           to={"/register"}

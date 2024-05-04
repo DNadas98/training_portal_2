@@ -1,10 +1,10 @@
 import {ReactNode} from "react";
 
 export interface DialogStateDto {
-  content: string|ReactNode;
+  content: string | ReactNode;
   confirmText?: string;
   cancelText?: string;
-  oneActionOnly?:boolean;
+  oneActionOnly?: boolean;
   onConfirm: () => unknown;
   blockScreen?: boolean;
 }

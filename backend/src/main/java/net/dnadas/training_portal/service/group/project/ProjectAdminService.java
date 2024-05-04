@@ -201,7 +201,6 @@ public class ProjectAdminService {
         return new UserResponseWithPermissionsDto(
           user.userId(),
           user.username(),
-          user.fullName(),
           new ArrayList<>(permissions));
       });
   }

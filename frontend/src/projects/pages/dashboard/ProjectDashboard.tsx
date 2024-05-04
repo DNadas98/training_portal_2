@@ -6,7 +6,16 @@ import usePermissions from "../../../authentication/hooks/usePermissions.ts";
 import {PermissionType} from "../../../authentication/dto/PermissionType.ts";
 import {ProjectResponseDetailsDto} from "../../dto/ProjectResponseDetailsDto.ts";
 import {isValidId} from "../../../common/utils/isValidId.ts";
-import {Button, Card, CardActions, CardContent, CardHeader, Grid, Stack, Typography} from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Grid,
+  Stack,
+  Typography
+} from "@mui/material";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
 import useLocalizedDateTime from "../../../common/localization/hooks/useLocalizedDateTime.tsx";
 import RichTextDisplay from "../../../common/richTextEditor/RichTextDisplay.tsx";
@@ -115,7 +124,8 @@ export default function ProjectDashboard() {
   function handleDeleteClick() {
     dialog.openDialog({
       content: localized("pages.project_dashboard.remove_confirm_message"),
-      confirmText: localized("pages.project_dashboard.remove_confirm_button"), onConfirm: deleteProject
+      confirmText: localized("pages.project_dashboard.remove_confirm_button"),
+      onConfirm: deleteProject
     });
   }
 
@@ -147,7 +157,8 @@ export default function ProjectDashboard() {
           </Typography>
         </CardContent>
         <CardActions> <Stack spacing={0.5}>
-          <Button sx={{width: "fit-content"}} onClick={() => navigate(`/groups/${groupId}/projects`)}>
+          <Button sx={{width: "fit-content"}}
+                  onClick={() => navigate(`/groups/${groupId}/projects`)}>
             {localized("inputs.back_to_projects")}
           </Button>
         </Stack></CardActions>
@@ -169,7 +180,8 @@ export default function ProjectDashboard() {
           }
           {(projectPermissions.includes(PermissionType.PROJECT_COORDINATOR))
             && <Grid item xs={12} md={true}><Card sx={{minHeight: "100%", minWidth: "100%"}}>
-              <CardHeader title={localized("statistics.cordinator_actions")} titleTypographyProps={{variant: "h6"}}/>
+              <CardHeader title={localized("statistics.cordinator_actions")}
+                          titleTypographyProps={{variant: "h6"}}/>
               <CardActions> <Stack spacing={0.5}>
                 <Button sx={{width: "fit-content", textAlign: "left"}} variant={"text"}
                         onClick={handleCoordinatorQuestionnairesClick}>

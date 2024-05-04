@@ -5,7 +5,9 @@ import LoadingSpinner from "../../../../common/utils/components/LoadingSpinner.t
 import usePermissions from "../../../../authentication/hooks/usePermissions.ts";
 import {PermissionType} from "../../../../authentication/dto/PermissionType.ts";
 import {QuestionnaireCreateRequestDto} from "../../../dto/QuestionnaireCreateRequestDto.ts";
-import {QuestionnaireResponseEditorDetailsDto} from "../../../dto/QuestionnaireResponseEditorDetailsDto.ts";
+import {
+  QuestionnaireResponseEditorDetailsDto
+} from "../../../dto/QuestionnaireResponseEditorDetailsDto.ts";
 import {QuestionType} from "../../../dto/QuestionType.ts";
 import {QuestionRequestDto} from "../../../dto/QuestionRequestDto.ts";
 import QuestionnaireEditorForm from "./components/QuestionnaireEditorForm.tsx";
@@ -44,9 +46,9 @@ export default function QuestionnaireEditor() {
     setQuestions(updatedQuestions);
   }
 
-  const handleStatusChange =(newStatus)=> setStatus(newStatus);
+  const handleStatusChange = (newStatus) => setStatus(newStatus);
 
-  const handleNameChange = (newName:string) => {
+  const handleNameChange = (newName: string) => {
     setName(newName);
   };
 
@@ -234,5 +236,10 @@ function toQuestionRequestDto(responseDto: QuestionResponseEditorDto): QuestionR
 }
 
 function toAnswerRequestDto(responseDto: AnswerResponseEditorDto): AnswerRequestDto {
-  return {tempId: uuidv4(), order: responseDto.order, text: responseDto.text, correct: responseDto.correct}
+  return {
+    tempId: uuidv4(),
+    order: responseDto.order,
+    text: responseDto.text,
+    correct: responseDto.correct
+  }
 }

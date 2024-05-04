@@ -1,4 +1,6 @@
-export const reorder = <T extends { order: number }>(list: T[], startIndex: number, endIndex: number) => {
+export const reorder = <T extends {
+  order: number
+}>(list: T[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -8,7 +10,10 @@ export const reorder = <T extends { order: number }>(list: T[], startIndex: numb
   return result;
 };
 
-export const reorderAfterDelete = <T extends { order: number, tempId: any }>(list: T[], tempId: any) => {
+export const reorderAfterDelete = <T extends {
+  order: number,
+  tempId: any
+}>(list: T[], tempId: any) => {
   let isRemoved = false;
   const result = list.reduce((acc: T[], current: T) => {
     if (current.tempId !== tempId) {

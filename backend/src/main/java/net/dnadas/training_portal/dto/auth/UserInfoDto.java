@@ -7,7 +7,5 @@ import java.util.Set;
 
 public record UserInfoDto(
   @NotNull String username,
-  @NotNull String email,
-  @NotNull String fullName,
   @NotNull Set<GlobalRole> roles) {
 }

@@ -9,7 +9,8 @@ import {TaskStatus} from "../../dto/TaskStatus.ts";
 import {Importance} from "../../dto/Importance.ts";
 import {TaskCreateRequestDto} from "../../dto/TaskCreateRequestDto.ts";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
-import useLocalizedSubmittedDate from "../../../common/localization/hooks/useLocalizedSubmittedDate.tsx";
+import useLocalizedSubmittedDate
+  from "../../../common/localization/hooks/useLocalizedSubmittedDate.tsx";
 
 export default function AddTask() {
   const {loading: permissionsLoading, projectPermissions} = usePermissions();

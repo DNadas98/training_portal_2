@@ -13,7 +13,7 @@ public class UserConverter {
 
   public UserResponsePublicDto toUserResponsePublicDto(ApplicationUser applicationUser) {
     return new UserResponsePublicDto(
-      applicationUser.getId(), applicationUser.getActualUsername(), applicationUser.getFullName());
+      applicationUser.getId(), applicationUser.getUsername());
   }
 
   public List<UserResponsePublicDto> toUserResponsePublicDtos(
@@ -24,7 +24,6 @@ public class UserConverter {
 
   public UserResponsePrivateDto toUserResponsePrivateDto(ApplicationUser applicationUser) {
     return new UserResponsePrivateDto(
-      applicationUser.getId(), applicationUser.getActualUsername(), applicationUser.getEmail(),
-      applicationUser.getFullName());
+      applicationUser.getId(), applicationUser.getUsername());
   }
 }

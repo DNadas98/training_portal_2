@@ -8,7 +8,8 @@ import LoadingSpinner from "../../../common/utils/components/LoadingSpinner.tsx"
 import usePermissions from "../../../authentication/hooks/usePermissions.ts";
 import {PermissionType} from "../../../authentication/dto/PermissionType.ts";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
-import useLocalizedSubmittedDate from "../../../common/localization/hooks/useLocalizedSubmittedDate.tsx";
+import useLocalizedSubmittedDate
+  from "../../../common/localization/hooks/useLocalizedSubmittedDate.tsx";
 
 export default function AddProject() {
   const {loading: permissionsLoading, groupPermissions} = usePermissions();
@@ -53,7 +54,13 @@ export default function AddProject() {
       const startDate = toSubmittedDate(formData.get("startDate") as string);
       const deadline = toSubmittedDate(formData.get("deadline") as string);
 
-      const requestDto: ProjectCreateRequestDto = {name, description, detailedDescription, startDate, deadline};
+      const requestDto: ProjectCreateRequestDto = {
+        name,
+        description,
+        detailedDescription,
+        startDate,
+        deadline
+      };
       const response = await addProject(requestDto);
 
       if (!response || response.error || response?.status > 399 || !response.message || !response.data) {

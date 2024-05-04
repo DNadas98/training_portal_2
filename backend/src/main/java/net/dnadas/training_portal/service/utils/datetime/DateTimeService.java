@@ -15,8 +15,7 @@ public class DateTimeService {
   public Instant toStoredDate(String zonedDateTimeString) {
     try {
       ZonedDateTime zdt = ZonedDateTime.parse(zonedDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
-      Instant instant = zdt.toInstant();
-      return instant;
+      return zdt.toInstant();
     } catch (Exception e) {
       throw new InvalidDateTimeReceivedException();
     }
@@ -24,8 +23,7 @@ public class DateTimeService {
 
   public String toDisplayedDate(Instant storedDate) {
     ZonedDateTime zonedDateTime = storedDate.atZone(ZoneId.of("UTC"));
-    String formattedDateTime = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-    return formattedDateTime;
+    return zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
   }
 
   public void validateTaskDates(

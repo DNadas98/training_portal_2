@@ -6,11 +6,10 @@ public record QuestionnaireSubmissionStatsInternalDto(
   String questionnaireName, Integer questionnaireMaxPoints, Long maxPointSubmissionId,
   Instant maxPointSubmissionCreatedAt,
   Integer maxPointSubmissionReceivedPoints,
-  Long userId, String username, String fullName, String email,
-  String currentCoordinatorFullName,
-  String currentDataPreparatorFullName,
+  Long userId, String username,
+  String coordinatorUsername,
+  String dataPreparatorUsername,
   Boolean hasExternalTestQuestionnaire,
   Boolean hasExternalTestFailure,
-  Boolean receivedSuccessfulCompletionEmail,
   Long submissionCount) {
 }

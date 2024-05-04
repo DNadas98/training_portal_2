@@ -162,7 +162,8 @@ export default function GroupJoinRequests() {
                        onChange={handleJoinRequestSearch}/>
           </Grid>
           <Grid item xs={12} md={"auto"}>
-            <URLQueryPagination totalPages={totalPages} defaultPage={1} onPageChange={handlePageChange}
+            <URLQueryPagination totalPages={totalPages} defaultPage={1}
+                                onPageChange={handlePageChange}
                                 onSizeChange={handleSizeChange}/>
           </Grid>
         </Grid>

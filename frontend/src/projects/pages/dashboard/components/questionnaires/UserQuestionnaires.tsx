@@ -3,7 +3,9 @@ import LoadingSpinner from "../../../../../common/utils/components/LoadingSpinne
 import {useNavigate} from "react-router-dom";
 import {useNotification} from "../../../../../common/notification/context/NotificationProvider.tsx";
 import UserQuestionnaireBrowser from "./UserQuestionnaireBrowser.tsx";
-import {QuestionnaireResponseDto} from "../../../../../questionnaires/dto/QuestionnaireResponseDto.ts";
+import {
+  QuestionnaireResponseDto
+} from "../../../../../questionnaires/dto/QuestionnaireResponseDto.ts";
 import {isValidId} from "../../../../../common/utils/isValidId.ts";
 import useAuthJsonFetch from "../../../../../common/api/hooks/useAuthJsonFetch.tsx";
 import useLocalized from "../../../../../common/localization/hooks/useLocalized.tsx";
@@ -36,7 +38,10 @@ export default function UserQuestionnaires({groupId, projectId}: UserQuestionnai
       });
       if (!response?.status || response.status > 399 || !response?.data) {
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: `${response?.error ?? defaultError}`
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: `${response?.error ?? defaultError}`
         });
         setQuestionnaires([]);
         return;

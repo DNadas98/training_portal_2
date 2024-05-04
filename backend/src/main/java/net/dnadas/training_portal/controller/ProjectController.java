@@ -27,7 +27,7 @@ public class ProjectController {
   @GetMapping("/all")
   public ResponseEntity<?> getAllProjects(
     @PathVariable @Min(1) Long groupId) {
-    List<ProjectResponsePublicDTO> projects=projectService.getAllProjectsOfGroup(groupId);
+    List<ProjectResponsePublicDTO> projects = projectService.getAllProjectsOfGroup(groupId);
     return ResponseEntity.status(HttpStatus.OK).body(Map.of("data", projects));
   }
 

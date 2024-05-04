@@ -84,7 +84,7 @@ public class JwtService {
 
     return Jwts.builder()
       .setClaims(new HashMap())
-      .setSubject(payloadDto.email())
+      .setSubject(payloadDto.username())
       .setIssuedAt(now)
       .setExpiration(expirationDate)
       .signWith(getSigningKey(secret), algorithm)
@@ -93,8 +93,8 @@ public class JwtService {
 
   private TokenPayloadDto getPayloadDto(Claims claims) {
     try {
-      String email = claims.getSubject();
-      return new TokenPayloadDto(email);
+      String username = claims.getSubject();
+      return new TokenPayloadDto(username);
     } catch (IllegalArgumentException | NullPointerException e) {
       throw new UnauthorizedException();
     }

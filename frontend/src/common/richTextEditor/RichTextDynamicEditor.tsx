@@ -1,9 +1,9 @@
-import {useRef, useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import {debounce, Grid} from '@mui/material';
-import { RichTextEditor, RichTextReadOnly, type RichTextEditorRef } from 'mui-tiptap';
+import {RichTextEditor, type RichTextEditorRef, RichTextReadOnly} from 'mui-tiptap';
 import useExtensions from './UseExtensions.tsx';
 import EditorMenuControls from './EditorMenuControls';
-import { useDialog } from "../dialog/context/DialogProvider.tsx";
+import {useDialog} from "../dialog/context/DialogProvider.tsx";
 
 interface RichTextDynamicEditorProps {
   id: any;
@@ -14,7 +14,7 @@ interface RichTextDynamicEditorProps {
 const RichTextDynamicEditor = (props: RichTextDynamicEditorProps) => {
   const rteRef = useRef<RichTextEditorRef>(null);
   const extensions = useExtensions({});
-  const { openDialog } = useDialog();
+  const {openDialog} = useDialog();
 
 
   const debouncedOnChange = useCallback(debounce((value) => {
@@ -36,7 +36,8 @@ const RichTextDynamicEditor = (props: RichTextDynamicEditorProps) => {
     openDialog({
       oneActionOnly: true,
       confirmText: "Close",
-      onConfirm: () => {},
+      onConfirm: () => {
+      },
       content: (
         <RichTextEditor
           ref={rteRef}

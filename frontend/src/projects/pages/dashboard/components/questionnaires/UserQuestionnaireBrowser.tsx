@@ -1,6 +1,8 @@
 import {Grid, Stack} from "@mui/material";
 import {FormEvent} from "react";
-import {QuestionnaireResponseDto} from "../../../../../questionnaires/dto/QuestionnaireResponseDto.ts";
+import {
+  QuestionnaireResponseDto
+} from "../../../../../questionnaires/dto/QuestionnaireResponseDto.ts";
 import UserQuestionnaireList from "./UserQuestionnaireList.tsx";
 
 interface UserQuestionnaireBrowserProps {

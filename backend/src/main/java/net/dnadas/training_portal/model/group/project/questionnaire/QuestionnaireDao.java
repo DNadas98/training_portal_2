@@ -68,17 +68,6 @@ public interface QuestionnaireDao extends JpaRepository<Questionnaire, Long> {
     Long groupId, Long projectId, ApplicationUser user);
 
   @Query("SELECT q FROM Questionnaire q " +
-    "JOIN QuestionnaireSubmission qs " +
-    "ON qs.questionnaire = q " +
-    "WHERE q.project.userGroup.id = :groupId " +
-    "AND q.project.id = :projectId " +
-    "AND qs.user = :user " +
-    "AND qs.maxPoints = qs.receivedPoints " +
-    "ORDER BY qs.createdAt DESC")
-  List<Questionnaire> findAllByGroupIdAndProjectIdAndMaxPointSubmissionExists(
-    Long groupId, Long projectId, ApplicationUser user);
-
-  @Query("SELECT q FROM Questionnaire q " +
     "WHERE q.project.userGroup.id = :groupId " +
     "AND q.project.id = :projectId " +
     "ORDER BY q.createdAt DESC")

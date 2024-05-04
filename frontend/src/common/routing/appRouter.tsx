@@ -5,7 +5,6 @@ import NotFound from "../../public/pages/errorPages/NotFound.tsx";
 import RequireAuthentication from "../../authentication/components/RequireAuthentication.tsx";
 import {GlobalRole} from "../../authentication/dto/userInfo/GlobalRole.ts";
 import UserLayout from "../../user/layout/UserLayout.tsx";
-import RegisterVerificationRedirect from "../../authentication/pages/redirect/RegisterVerificationRedirect.tsx";
 import GroupDashboard from "../../groups/pages/dashboard/GroupDashboard.tsx";
 import GroupLayout from "../../groups/layout/GroupLayout.tsx";
 import UpdateGroup from "../../groups/pages/update/UpdateGroup.tsx";
@@ -22,28 +21,29 @@ import AddTask from "../../tasks/pages/add/AddTask.tsx";
 import TaskDashboard from "../../tasks/pages/dashboard/TaskDashboard.tsx";
 import UpdateTask from "../../tasks/pages/update/UpdateTask.tsx";*/
 import Questionnaires from "../../questionnaires/pages/editor/questionnaires/Questionnaires.tsx";
-import QuestionnaireEditor from "../../questionnaires/pages/editor/createUpdate/QuestionnaireEditor.tsx";
+import QuestionnaireEditor
+  from "../../questionnaires/pages/editor/createUpdate/QuestionnaireEditor.tsx";
 import Home from "../../public/pages/home/Home.tsx";
 import Login from "../../authentication/pages/login/Login.tsx";
 import Register from "../../authentication/pages/register/Register.tsx";
 import Profile from "../../user/pages/profile/Profile.tsx";
 import UserJoinRequests from "../../user/pages/requests/UserJoinRequests.tsx";
 import Logout from "../../authentication/pages/Logout.tsx";
-import SubmitQuestionnaire from "../../questionnaires/pages/user/submissions/SubmitQuestionnaire.tsx";
-import UserQuestionnaireSubmissions from "../../questionnaires/pages/user/submissions/UserQuestionnaireSubmissions.tsx";
+import SubmitQuestionnaire
+  from "../../questionnaires/pages/user/submissions/SubmitQuestionnaire.tsx";
+import UserQuestionnaireSubmissions
+  from "../../questionnaires/pages/user/submissions/UserQuestionnaireSubmissions.tsx";
 import EditorQuestionnaireSubmissions
   from "../../questionnaires/pages/editor/submissions/EditorQuestionnaireSubmissions.tsx";
-import EmailChangeVerificationRedirect from "../../authentication/pages/redirect/EmailChangeVerificationRedirect.tsx";
-import PasswordReset from "../../authentication/pages/passwordReset/PasswordReset.tsx";
-import PasswordResetVerificationRedirect
-  from "../../authentication/pages/redirect/PasswordResetVerificationRedirect.tsx";
-import QuestionnaireStatistics from "../../questionnaires/pages/coordinator/statistics/QuestionnaireStatistics.tsx";
+import QuestionnaireStatistics
+  from "../../questionnaires/pages/coordinator/statistics/QuestionnaireStatistics.tsx";
 import PermissionProvider from "../../authentication/context/PermissionProvider.tsx";
 import ProjectAssignedMembers from "../../projects/pages/members/ProjectAssignedMembers.tsx";
 import CoordinatorQuestionnaires
   from "../../questionnaires/pages/coordinator/questionnaires/CoordinatorQuestionnaires.tsx";
 import AdminLayout from "../../admin/layout/AdminLayout.tsx";
-import InvitationRedirect from "../../authentication/pages/redirect/InvitationRedirect.tsx";
+import PreRegistrationComplete
+  from "../../authentication/pages/preregistration/PreRegistrationComplete.tsx";
 import AdminDashboard from "../../admin/pages/adminDashboard/AdminDashboard.tsx";
 import GroupAdminDashboard from "../../groups/pages/preregister/GroupAdminDashboard.tsx";
 
@@ -56,7 +56,6 @@ const appRouter = createBrowserRouter([
     children: [
       {path: "", element: <Home/>},
       {path: "login", element: <Login/>},
-      {path: "password-reset", element: <PasswordReset/>},
       {path: "register", element: <Register/>},
       {path: "/*", element: <NotFound/>}
     ]
@@ -68,16 +67,7 @@ const appRouter = createBrowserRouter([
     errorElement: <ErrorPage/>,
     children: [
       {
-        path: "registration", element: <RegisterVerificationRedirect/>
-      },
-      {
-        path: "email-change", element: <EmailChangeVerificationRedirect/>
-      },
-      {
-        path: "password-reset", element: <PasswordResetVerificationRedirect/>
-      },
-      {
-        path: "invitation", element: <InvitationRedirect/>
+        path: "invitation", element: <PreRegistrationComplete/>
       }
     ]
   },
@@ -156,7 +146,8 @@ const appRouter = createBrowserRouter([
                 element: <UserQuestionnaireSubmissions/>,
               },
               {
-                path: ":groupId/projects/:projectId/editor/questionnaires", element: <Questionnaires/>
+                path: ":groupId/projects/:projectId/editor/questionnaires",
+                element: <Questionnaires/>
               },
               {
                 path: ":groupId/projects/:projectId/editor/questionnaires/:questionnaireId/tests/new",
@@ -167,7 +158,8 @@ const appRouter = createBrowserRouter([
                 element: <EditorQuestionnaireSubmissions/>,
               },
               {
-                path: ":groupId/projects/:projectId/editor/questionnaires/create", element: <QuestionnaireEditor/>,
+                path: ":groupId/projects/:projectId/editor/questionnaires/create", element:
+                  <QuestionnaireEditor/>,
               },
               {
                 path: ":groupId/projects/:projectId/editor/questionnaires/:questionnaireId/update",

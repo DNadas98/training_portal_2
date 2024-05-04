@@ -32,14 +32,11 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import usePermissions from "../../../../authentication/hooks/usePermissions.ts";
 import useLocalizedDateTime from "../../../../common/localization/hooks/useLocalizedDateTime.tsx";
 import {PermissionType} from "../../../../authentication/dto/PermissionType.ts";
-//import RichTextDisplay from "../../../../common/richTextEditor/RichTextDisplay.tsx";
 import URLQueryPagination from "../../../../common/pagination/URLQueryPagination.tsx";
 import {ApiResponsePageableDto} from "../../../../common/api/dto/ApiResponsePageableDto.ts";
 import {QuestionnaireResponseEditorDto} from "../../../dto/QuestionnaireResponseEditorDto.ts";
-import {AccountBoxRounded, Check, Close, Downloading, FileDownload, MailOutlined} from "@mui/icons-material";
+import {Check, Close, Downloading, FileDownload} from "@mui/icons-material";
 import useAuthFetch from "../../../../common/api/hooks/useAuthFetch.tsx";
-import {useDialog} from "../../../../common/dialog/context/DialogProvider.tsx";
-import CopyButton from "../../../../common/utils/components/CopyButton.tsx";
 import useLocalized from "../../../../common/localization/hooks/useLocalized.tsx";
 
 
@@ -67,7 +64,6 @@ export default function QuestionnaireStatistics() {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const size = parseInt(searchParams.get('size') || '10', 10);
   const [usernameSearchValue, setUsernameSearchValue] = useState<string>("");
-  const dialog = useDialog();
 
   const localized = useLocalized();
 
@@ -89,7 +85,10 @@ export default function QuestionnaireStatistics() {
       if (!response || !response?.status || !response.data || response.status > 399) {
         setQuestionnaire(undefined);
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: response?.error ?? defaultError
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: response?.error ?? defaultError
         });
         return;
       }
@@ -216,30 +215,6 @@ export default function QuestionnaireStatistics() {
       stat.maxPointSubmissionReceivedPoints !== null && stat.maxPointSubmissionReceivedPoints !== undefined;
   }
 
-  const handleContactClick = (data: QuestionnaireSubmissionStatisticsResponseDto) => {
-    dialog.openDialog({
-      oneActionOnly: true, confirmText: localized("common.close"), onConfirm: () => {
-      },
-      content: <Grid container spacing={2} alignItems={"center"} justifyContent={"space-between"}
-                     maxWidth={"fit-content"}>
-        <Grid item xs={12}>
-          <Stack spacing={1} direction={"row"} alignItems={"center"}>
-            <AccountBoxRounded/>
-            <Typography variant={"h6"}>{data.fullName}</Typography>
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography>{localized("inputs.username")}:</Typography>
-          <Typography>{data.username}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography>{localized("inputs.email")}:</Typography>
-          <CopyButton text={data.email}/>
-        </Grid>
-      </Grid>
-    })
-  }
-
   if (permissionsLoading || questionnaireLoading) {
     return <LoadingSpinner/>;
   } else if ((!projectPermissions?.length) || !projectPermissions.includes(PermissionType.PROJECT_COORDINATOR)) {
@@ -316,7 +291,8 @@ export default function QuestionnaireStatistics() {
             <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
               <FormControl>
                 <InputLabel id="status_select_label">{localized("statistics.status")}</InputLabel>
-                <Select labelId={"status_select_label"} label={"Status"} value={displayedQuestionnaireStatus}
+                <Select labelId={"status_select_label"} label={"Status"}
+                        value={displayedQuestionnaireStatus}
                         onChange={handleSetStatus}
                         sx={{minWidth: 150}}>
                   <MenuItem value={QuestionnaireStatus.ACTIVE}><Typography>
@@ -346,7 +322,6 @@ export default function QuestionnaireStatistics() {
             <TableHead>
               <TableRow>
                 <TableCell>{localized("statistics.username")}</TableCell>
-                <TableCell>{localized("statistics.name")}</TableCell>
                 <TableCell>{localized("statistics.max_date")}</TableCell>
                 <TableCell>{localized("statistics.max_points")}</TableCell>
                 <TableCell>{localized("statistics.total_submissions")}</TableCell>
@@ -370,14 +345,6 @@ export default function QuestionnaireStatistics() {
                       sx={{'&:last-child td, &:last-child th': {border: 0}}}
                     >
                       <TableCell>{stat.username}</TableCell>
-                      <TableCell>
-                        <Button color={"inherit"} variant={"text"} sx={{padding: 0, textTransform: "none"}}
-                                onClick={() => handleContactClick(stat)}>
-                          <Stack spacing={0.5} alignItems={"center"} justifyContent={"left"}
-                                 direction={"row"}><MailOutlined/><Typography
-                            whiteSpace={"nowrap"}>{stat.fullName}</Typography></Stack>
-                        </Button>
-                      </TableCell>
                       {hasValidSubmission(stat)
                         ? <>
                           <TableCell> {getLocalizedDateTime(new Date(stat.maxPointSubmissionCreatedAt as string))}</TableCell>
@@ -388,12 +355,14 @@ export default function QuestionnaireStatistics() {
                           <TableCell>-</TableCell><TableCell>-</TableCell><TableCell>0</TableCell>
                         </>}
                       <TableCell><Typography
-                        whiteSpace={"nowrap"}>{stat.currentCoordinatorFullName}</Typography></TableCell>
+                        whiteSpace={"nowrap"}>{stat.coordinatorUsername}</Typography></TableCell>
                       <TableCell><Typography
-                        whiteSpace={"nowrap"}>{stat.currentDataPreparatorFullName}</Typography></TableCell>
-                      <TableCell>{stat.hasExternalTestQuestionnaire ? <Check/> : <Close/>}</TableCell>
+                        whiteSpace={"nowrap"}>{stat.dataPreparatorUsername}</Typography></TableCell>
+                      <TableCell>{stat.hasExternalTestQuestionnaire ? <Check/> :
+                        <Close/>}</TableCell>
                       <TableCell>{stat.hasExternalTestFailure ? <Check/> : <Close/>}</TableCell>
-                      <TableCell>{stat.receivedSuccessfulCompletionEmail ? <Check/> : <Close/>}</TableCell>
+                      <TableCell>{stat.receivedSuccessfulCompletionEmail ? <Check/> :
+                        <Close/>}</TableCell>
                     </TableRow>
                   ))
                   : <TableRow>

@@ -25,7 +25,7 @@ public class ConstraintViolationExceptionHandler {
   public ResponseEntity<?> handleDuplicateFields(ConstraintViolationException e, Locale locale) {
     logger.error(e.getMessage());
     if (e.getMessage().contains("unique constraint")) {
-      String errorMessage = getConstraintErrorMessage(e.getMessage(),locale);
+      String errorMessage = getConstraintErrorMessage(e.getMessage(), locale);
       return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", errorMessage));
     }
     throw e;
@@ -43,7 +43,8 @@ public class ConstraintViolationExceptionHandler {
     if (matcher.find()) {
       String keyName = matcher.group(1);
       String keyValue = matcher.group(2);
-      return messageSource.getMessage("error.constraint_violation", new Object[]{keyName, keyValue}, locale);
+      return messageSource.getMessage(
+        "error.constraint_violation", new Object[]{keyName, keyValue}, locale);
     }
     return messageSource.getMessage("error.constraint_violation.default", new Object[]{}, locale);
   }

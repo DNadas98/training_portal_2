@@ -5,7 +5,8 @@ import ProjectNameInput from "../../../components/ProjectNameInput.tsx";
 import ProjectDescriptionInput from "../../../components/ProjectDescriptionInput.tsx";
 import StartDateInput from "../../../../common/utils/components/StartDateInput.tsx";
 import DeadlineInput from "../../../../common/utils/components/DeadlineInput.tsx";
-import RichTextEditorUncontrolled from "../../../../common/richTextEditor/RichTextEditorUncontrolled.tsx";
+import RichTextEditorUncontrolled
+  from "../../../../common/richTextEditor/RichTextEditorUncontrolled.tsx";
 
 interface UpdateProjectFormProps {
   name: string;
@@ -49,7 +50,8 @@ export default function UpdateProjectForm(props: UpdateProjectFormProps) {
                   <Stack spacing={2}>
                     <ProjectNameInput name={props.name}/>
                     <ProjectDescriptionInput description={props.description}/>
-                    <RichTextEditorUncontrolled name={"detailedDescription"} defaultValue={props.detailedDescription}/>
+                    <RichTextEditorUncontrolled name={"detailedDescription"}
+                                                defaultValue={props.detailedDescription}/>
                     <StartDateInput defaultValue={props.startDate}/>
                     <DeadlineInput defaultValue={props.deadline}/>
                     <Button type={"submit"}

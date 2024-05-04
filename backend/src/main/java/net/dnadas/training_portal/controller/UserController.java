@@ -2,8 +2,6 @@ package net.dnadas.training_portal.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.dnadas.training_portal.dto.user.UserEmailUpdateDto;
-import net.dnadas.training_portal.dto.user.UserFullNameUpdateDto;
 import net.dnadas.training_portal.dto.user.UserPasswordUpdateDto;
 import net.dnadas.training_portal.dto.user.UserResponsePrivateDto;
 import net.dnadas.training_portal.service.user.ApplicationUserService;
@@ -29,15 +27,6 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(Map.of("data", userDetails));
   }
 
-  @PatchMapping("/fullName")
-  public ResponseEntity<?> updateFullName(
-    @RequestBody @Valid UserFullNameUpdateDto updateDto, Locale locale) {
-    applicationUserService.updateFullName(updateDto);
-    return ResponseEntity.status(HttpStatus.OK).body(
-      Map.of("message", messageSource.getMessage(
-        "user.details.update.success", null, locale)));
-  }
-
   @PatchMapping("/password")
   public ResponseEntity<?> updatePassword(
     @RequestBody @Valid UserPasswordUpdateDto updateDto, Locale locale) {
@@ -45,15 +34,6 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(
       Map.of("message", messageSource.getMessage(
         "user.details.update.success", null, locale)));
-  }
-
-  @PatchMapping("/email")
-  public ResponseEntity<?> requestEmailUpdate(
-    @RequestBody @Valid UserEmailUpdateDto updateDto, Locale locale) throws Exception {
-    applicationUserService.sendEmailChangeVerificationEmail(updateDto, locale);
-    return ResponseEntity.status(HttpStatus.OK).body(
-      Map.of("message", messageSource.getMessage(
-        "user.email.change.pending", null, locale)));
   }
 
   @DeleteMapping

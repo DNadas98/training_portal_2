@@ -6,7 +6,7 @@ import useLocalized from "../../common/localization/hooks/useLocalized.tsx";
 
 export default function useRefresh() {
   const authentication = useAuthentication();
-  const localized=useLocalized();
+  const localized = useLocalized();
   const defaultErrorMessage = localized("common.error.fetch.unknown");
   const publicJsonFetch = usePublicJsonFetch();
   const refresh = async (): Promise<RefreshResponseDto> => {

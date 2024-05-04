@@ -23,7 +23,7 @@ interface DialogProviderProps {
 }
 
 export const DialogProvider = ({children}: DialogProviderProps) => {
-  const localized=useLocalized();
+  const localized = useLocalized();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const initialState: DialogStateDto = {
     content: "",

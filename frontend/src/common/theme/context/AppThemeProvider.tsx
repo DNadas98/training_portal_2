@@ -109,7 +109,8 @@ export function AppThemeProvider({children}: AppThemeProviderProps) {
 
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={getDateFnsLocale(locale) as Locale}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}
+                          adapterLocale={getDateFnsLocale(locale) as Locale}>
       <ThemeProvider theme={createTheme(theme, locales[locale])}>
         <CssBaseline/>
         {children}

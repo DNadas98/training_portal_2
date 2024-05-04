@@ -4,7 +4,7 @@ export const texts = {
       "administrator": "Administrator",
       "developer": "Developer",
       "sourceCode": "Project Source Code",
-      "legalPolicyText": "By using our service, you consent to your full name and email address being used by this service.\nThe name and email address will only be used for contacting you and providing statistics for your mentors and administrators.\nYour email address will only be visible to mentors and administrators of your projects within your groups.\nYour data will never be used for marketing purposes, it will never be shared with third parties."
+      "legalPolicyText": "By using our service, you consent to your identifier being used by this service.\nYour identifier and your activity in the application will only be visible to mentors and administrators of your projects within your groups.\nYour data will never be used for marketing purposes, it will never be shared with third parties."
     },
     "menus": {
       "home": "Home",
@@ -47,34 +47,20 @@ export const texts = {
         "title": "Sign Up",
         "info": "The password must contain at least one uppercase character, one lowercase character and one digit.",
         "submit_button": "Sign Up",
+        "success": "Account created successfully",
         "error": {
           "default": "An error has occurred during the sign up process"
-        }
-      },
-      "password_reset": {
-        "title": "Password Reset Request",
-        "submit_button": "Send Reset Email",
-        "error": {
-          "default": "An error has occurred during the password reset request process"
         }
       },
       "pre_registration": {
         "title": "Complete Your Registration",
         "submit_button": "Submit",
-        "info": "You have been invited by your mentors to join tesztsor.hu.\nIn this application, you can find educational materials, and fill out tests, that provide feedback about your learning progress.\nYour identifier in this case is a pre-registered identifier, created to align with the requirements of your group.\nTo complete your registration, log in and use the application in the future, enter a password, and modify your name if needed.\nYour email address and password will be your sig-in credentials.",
+        "info": "You have been invited by your mentors to join tesztsor.hu.\nIn this application, you can find educational materials, and fill out tests, that provide feedback about your learning progress.\nYour identifier in this case is a pre-registered identifier, created to align with the requirements of your group.\nTo complete your registration, log in and use the application in the future, enter a password.\nYour identifier and password will be your sig-in credentials.",
         "error": {
           "default": "An error has occurred during the registration process"
         }
       },
       "redirect": {
-        "email_change_verification": {
-          "error": {
-            "default": "An error has occurred during the email change verification process"
-          }
-        },
-        "password_reset_verification": {
-          "enter_new_password": "Enter new password!"
-        },
         "registration_verification": {
           "error": {
             "default": "An error has occurred during the sign up verification process"
@@ -87,16 +73,11 @@ export const texts = {
           "groups_and_projects": "Groups and Projects",
           "manage_join_requests": "Manage Join Requests",
           "user_details": "User Details",
-          "change_full_name": "Change Full Name",
-          "change_email": "Change Email Address",
           "change_password": "Change Password",
           "remove_user": "Remove All User Data",
           "archive_user_confirmation": "Do you really wish to archive your account and erase all your personal data permanently?",
           "error": {
             "update_password_default": "Failed to update password. Please try again later, if the issue still persists, please contact our administrators",
-            "update_email_default": "Failed to update email address. Please try again later, if the issue still persists, please contact our administrators",
-            "update_email_matches_current": "The provided email address matches your current email address",
-            "update_full_name_default": "Failed to update full name. Please try again later, if the issue still persists, please contact our administrators",
             "remove_user_default": "Failed to remove user data. Please try again later, if the issue still persists, please contact our administrators"
           }
         },
@@ -211,7 +192,7 @@ export const texts = {
       "max_points": "Max Points",
       "total_submissions": "Total Submissions",
       "coordinator": "Coordinator",
-      "datapreparator":"Data Preparator",
+      "datapreparator": "Data Preparator",
       "external_questionnaire": "External Questionnaire",
       "external_failure": "External Failure",
       "completion_email": "Completion Email",
@@ -220,9 +201,7 @@ export const texts = {
       "failed_to_download_statistics_error": "Failed to download statistics"
     },
     "inputs": {
-      "fullName": "Full Name",
       "username": "Identifier",
-      "email": "Email address",
       "password": "Password",
       "password_invalid": "The password must contain at least one uppercase character, one lowercase character and one digit.",
       "confirm_password": "Confirm Password",
@@ -275,7 +254,7 @@ export const texts = {
       "administrator": "Adminisztrátor",
       "developer": "Fejlesztő",
       "sourceCode": "A projekt forráskódja",
-      "legalPolicyText": "A szolgáltatás használatával Ön elfogadja, hogy alkalmazásunk kezeli az Ön teljes nevét, és az email címét.\nAdatait a rendszer kizárólag kapcsolattartásra, és a tesztsor kitöltésekről készült belső statisztikához használja.\nAz email címe és a teljes neve kizárólag az Ön szervezőinek lesz látható.\nAdatait marketing célra egyáltalán nem használjuk, harmadik félnek semmilyen formában nem adjuk tovább."
+      "legalPolicyText": "A szolgáltatás használatával Ön elfogadja, hogy alkalmazásunk kezeli az Ön azonosítóját.\nAdatait a rendszer kizárólag a tesztsor kitöltésekről készült belső statisztikához használja.\nAz azonosítója és az alkalmazáson belüli aktivitása kizárólag az Ön szervezőinek lesz látható.\nAdatait marketing célra egyáltalán nem használjuk, harmadik félnek semmilyen formában nem adjuk tovább."
     },
     "menus": {
       "home": "Főoldal",
@@ -318,6 +297,7 @@ export const texts = {
         "title": "Regisztráció",
         "info": "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számjegyet.",
         "submit_button": "Regisztráció",
+        "success": "A felhasználói fiók létrehozása sikeres volt",
         "error": {
           "default": "A regisztráció során hiba történt."
         }
@@ -331,26 +311,16 @@ export const texts = {
       },
       "pre_registration": {
         "title": "Üdvözöljük a tesztsor.hu oldalán!",
-        "info": "Önt szervezője meghívta a tesztsor.hu felhasználói közé.\nEzen a felületen oktatási anyagokat talál, valamint a felkészültségét mérő tesztsort tölthet ki.\nFelhasználóneve előre be lett állítva, a teljes nevét ha szükséges, módosíthatja.\nA belépéshez, illetve a későbbi használathoz, létre kell hoznia egy jelszót.\nA későbbiekben az email címével, illetve a most beállított jelszavával fog tudni belépni.",
+        "info": "Önt szervezője meghívta a tesztsor.hu felhasználói közé.\nEzen a felületen oktatási anyagokat talál, valamint a felkészültségét mérő tesztsort tölthet ki.\nAzonosítója előre be lett állítva.\nA belépéshez, illetve a későbbi használathoz, létre kell hoznia egy jelszót.\nA későbbiekben az azonosítójával, illetve a most beállított jelszavával fog tudni belépni.",
         "submit_button": "Beküldés",
         "error": {
           "default": "A regisztráció véglegesítése során hiba történt"
         }
       },
       "redirect": {
-        "email_change_verification": {
-          "error": {
-            "default": "Az email cím változtatás során hiba történt."
-          }
-        },
         "password_reset_verification": {
           "enter_new_password": "Írja be az új jelszavát!"
         },
-        "registration_verification": {
-          "error": {
-            "default": "A regisztráció megerősítése során hiba történt."
-          }
-        }
       },
       "user": {
         "profile": {
@@ -358,16 +328,11 @@ export const texts = {
           "groups_and_projects": "Csoportok és projektek",
           "manage_join_requests": "Csatlakozási kérelmek kezelése",
           "user_details": "Felhasználói adatok",
-          "change_full_name": "Név megváltoztatása",
-          "change_email": "Email cím megváltoztatása",
           "change_password": "Jelszó megváltoztatása",
           "remove_user": "Összes személyes adat törlése",
           "archive_user_confirmation": "Biztosan archiválja a felhasználóját és véglegesen törli minden személyes adatát?",
           "error": {
             "update_password_default": "A jelszó megváltoztatása során hiba történt",
-            "update_email_default": "Az email cím megváltoztatása során hiba történt",
-            "update_email_matches_current": "A megadott email cím egyezik a jelenlegi email címével",
-            "update_full_name_default": "A név megváltoztatása során hiba történt",
             "remove_user_default": "A felhasználói adatok törlése során hiba történt"
           }
         },
@@ -483,7 +448,7 @@ export const texts = {
       "max_points": "Max. pont",
       "total_submissions": "Kitöltések száma",
       "coordinator": "Szervező",
-      "datapreparator":"Adatelőkészítő",
+      "datapreparator": "Adatelőkészítő",
       "external_questionnaire": "Gyakorló kérdőív",
       "external_failure": "Gyakorló meghiúsulás",
       "completion_email": "Értesítő email",
@@ -492,9 +457,7 @@ export const texts = {
       "failed_to_download_statistics_error": "A statisztikák letöltése során hiba történt"
     },
     "inputs": {
-      "fullName": "Teljes név",
       "username": "LAKOS azonosító",
-      "email": "Email cím",
       "password": "Jelszó",
       "password_invalid": "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számjegyet.",
       "confirm_password": "Jelszó megerősítése",

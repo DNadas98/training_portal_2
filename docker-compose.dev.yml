@@ -1,14 +1,14 @@
 services:
   psql:
-    container_name: postgres-trainingportal-dev
+    container_name: postgres-trainingportal2-dev
     image: postgres
     environment:
-      POSTGRES_DB: trainingportaldb
+      POSTGRES_DB: trainingportal2db
       POSTGRES_USER: devuser
       POSTGRES_PASSWORD: devpassword
       PGDATA: /data/postgres
     volumes:
-      - db:/data/postgres
+      - db2:/data/postgres
     ports:
       - "56321:5432"
     restart: unless-stopped
@@ -19,4 +19,4 @@ services:
         max-file: "3"
 
 volumes:
-  db:
+  db2:

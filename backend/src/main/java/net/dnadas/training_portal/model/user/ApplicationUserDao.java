@@ -5,16 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ApplicationUserDao extends JpaRepository<ApplicationUser, Long> {
-  Optional<ApplicationUser> findByEmail(String email);
-
-  @Query("SELECT u FROM ApplicationUser u WHERE u.email = :email OR u. username = :username")
-  Optional<ApplicationUser> findByEmailOrUsername(
-    @Param("email") String email, @Param("username") String username);
 
   @Query("SELECT u FROM ApplicationUser u LEFT JOIN FETCH u.adminUserGroups WHERE u.id = :id")
   Optional<ApplicationUser> findByIdAndFetchAdminGroups(@Param("id") Long id);
@@ -42,22 +36,6 @@ public interface ApplicationUserDao extends JpaRepository<ApplicationUser, Long>
 
   Optional<ApplicationUser> findByUsername(String username);
 
-  @Query(
-    "SELECT u FROM Project p " +
-      "JOIN p.assignedMembers u " +
-      "WHERE p.id = :projectId " +
-      "AND p.userGroup.id = :groupId " +
-      "AND u.receivedSuccessfulCompletionEmail = false " +
-      "AND u.hasExternalTestQuestionnaire = true " +
-      "AND u.hasExternalTestFailure = true " +
-      "AND (SELECT COUNT(q) FROM Questionnaire q WHERE q.project.id = p.id) = (SELECT COUNT(qs) " +
-      "FROM QuestionnaireSubmission qs " +
-      "WHERE qs.questionnaire.project.id = p.id " +
-      "AND qs.user.id = u.id " +
-      "AND qs.receivedPoints = qs.maxPoints)" +
-      "ORDER BY u.username ASC"
-  )
-  List<ApplicationUser> findUsersWithCompletedRequirementsForProject(
-    Long groupId, Long projectId);
-
+  @Query("SELECT u FROM ApplicationUser u WHERE u.username = :username AND u.enabled = true")
+  Optional<ApplicationUser> findByUsernameAndEnabled(String username);
 }

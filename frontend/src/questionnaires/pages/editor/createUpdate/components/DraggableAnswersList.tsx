@@ -76,9 +76,11 @@ const DraggableAnswersList = (props: DraggableAnswersListProps) => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}>
                       <AnswerItem key={answer.tempId}
-                                  questionType={props.questionType} questionTempId={props.questionTempId}
+                                  questionType={props.questionType}
+                                  questionTempId={props.questionTempId}
                                   answersLength={props.answers.length} answer={answer}
-                                  onAnswerUpdate={handleUpdateAnswer} onRemoveAnswer={handleRemoveAnswer}/>
+                                  onAnswerUpdate={handleUpdateAnswer}
+                                  onRemoveAnswer={handleRemoveAnswer}/>
                     </ListItem>
                   )}
                 </Draggable>

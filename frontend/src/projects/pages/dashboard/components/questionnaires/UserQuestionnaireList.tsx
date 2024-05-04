@@ -11,7 +11,9 @@ import {
 } from "@mui/material";
 import ExpandIcon from "../../../../../common/utils/components/ExpandIcon.tsx";
 import LoadingSpinner from "../../../../../common/utils/components/LoadingSpinner.tsx";
-import {QuestionnaireResponseDto} from "../../../../../questionnaires/dto/QuestionnaireResponseDto.ts";
+import {
+  QuestionnaireResponseDto
+} from "../../../../../questionnaires/dto/QuestionnaireResponseDto.ts";
 import RichTextDisplay from "../../../../../common/richTextEditor/RichTextDisplay.tsx";
 import useLocalized from "../../../../../common/localization/hooks/useLocalized.tsx";
 
@@ -81,9 +83,10 @@ export default function UserQuestionnaireList(props: UserQuestionnaireListProps)
                 </Button>
                 : <Stack spacing={0.5} width={"100%"}>
                   {Number(questionnaire.submissionCount) < MAX_SUBMISSION_COUNT ?
-                    <Button sx={{width: "fit-content", textAlign: "left"}} variant={"contained"} onClick={() => {
-                      props.handleFillOutClick(questionnaire.id);
-                    }}>
+                    <Button sx={{width: "fit-content", textAlign: "left"}} variant={"contained"}
+                            onClick={() => {
+                              props.handleFillOutClick(questionnaire.id);
+                            }}>
                       {localized("questionnaire.fill_out_this_questionnaire")}
                     </Button> : <></>}
                   <Button sx={{width: "fit-content"}} onClick={() => {

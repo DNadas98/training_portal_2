@@ -1,10 +1,8 @@
 import {Avatar, Button, Card, CardContent, Grid, Stack, Typography} from "@mui/material";
 import {Lock} from "@mui/icons-material";
 import UsernameInput from "../../../components/inputs/UsernameInput.tsx";
-import EmailInput from "../../../components/inputs/EmailInput.tsx";
 import PasswordInput from "../../../components/inputs/PasswordInput.tsx";
 import {FormEvent} from "react";
-import FullNameInput from "../../../components/inputs/FullNameInput.tsx";
 import LegalPolicyCheckbox from "../../../../common/utils/components/LegalPolicyCheckbox.tsx";
 import useLocalized from "../../../../common/localization/hooks/useLocalized.tsx";
 
@@ -36,12 +34,11 @@ export default function RegisterCard({onSubmit}: RegisterCardProps) {
           </Stack>
           <CardContent sx={{justifyContent: "center", textAlign: "center"}}>
             <Stack spacing={2}>
-              <Typography variant={"body2"} textAlign={"left"}>{localized("pages.sign_up.info")}</Typography>
+              <Typography variant={"body2"}
+                          textAlign={"left"}>{localized("pages.sign_up.info")}</Typography>
               <form onSubmit={onSubmit}>
                 <Stack spacing={2}>
                   <LegalPolicyCheckbox/>
-                  <FullNameInput/>
-                  <EmailInput/>
                   <UsernameInput/>
                   <PasswordInput autoComplete={"new-password"}/>
                   <PasswordInput confirm={true}/>

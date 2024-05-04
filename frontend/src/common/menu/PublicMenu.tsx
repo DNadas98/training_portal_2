@@ -9,7 +9,7 @@ import {IMenuItem} from "./IMenuItem.ts";
 export default function PublicMenu(props: IMenuComponentProps) {
   const localized = useLocalized();
   const isSmallScreen = IsSmallScreen();
-  const menuItems:IMenuItem[] = [
+  const menuItems: IMenuItem[] = [
     {path: "/", title: localized("menus.home")},
     {path: "/login", title: localized("menus.sign_in")},
     {path: "/register", title: localized("menus.sign_up")}

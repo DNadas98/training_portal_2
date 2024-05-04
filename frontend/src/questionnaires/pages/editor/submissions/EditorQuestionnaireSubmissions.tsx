@@ -5,16 +5,31 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useNotification} from "../../../../common/notification/context/NotificationProvider.tsx";
 import {isValidId} from "../../../../common/utils/isValidId.ts";
 import {PermissionType} from "../../../../authentication/dto/PermissionType.ts";
-import {Button, Card, CardActions, CardContent, CardHeader, Grid, Stack, Typography} from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Grid,
+  Stack,
+  Typography
+} from "@mui/material";
 import {useDialog} from "../../../../common/dialog/context/DialogProvider.tsx";
 import useAuthJsonFetch from "../../../../common/api/hooks/useAuthJsonFetch.tsx";
-import {QuestionnaireSubmissionResponseEditorDto} from "../../../dto/QuestionnaireSubmissionResponseEditorDto.ts";
+import {
+  QuestionnaireSubmissionResponseEditorDto
+} from "../../../dto/QuestionnaireSubmissionResponseEditorDto.ts";
 import {QuestionnaireResponseDto} from "../../../dto/QuestionnaireResponseDto.ts";
 import URLQueryPagination from "../../../../common/pagination/URLQueryPagination.tsx";
 import {ApiResponsePageableDto} from "../../../../common/api/dto/ApiResponsePageableDto.ts";
-import UserQuestionnaireSubmissionList from "../../user/submissions/components/UserQuestionnaireSubmissionList.tsx";
-import QuestionnaireSubmissionDetails from "../../user/submissions/components/QuestionnaireSubmissionDetails.tsx";
-import {QuestionnaireSubmissionResponseDetailsDto} from "../../../dto/QuestionnaireSubmissionResponseDetailsDto.ts";
+import UserQuestionnaireSubmissionList
+  from "../../user/submissions/components/UserQuestionnaireSubmissionList.tsx";
+import QuestionnaireSubmissionDetails
+  from "../../user/submissions/components/QuestionnaireSubmissionDetails.tsx";
+import {
+  QuestionnaireSubmissionResponseDetailsDto
+} from "../../../dto/QuestionnaireSubmissionResponseDetailsDto.ts";
 
 export default function EditorQuestionnaireSubmissions() {
   const {loading: permissionsLoading, projectPermissions} = usePermissions();
@@ -191,8 +206,8 @@ export default function EditorQuestionnaireSubmissions() {
   }
 
   function handleBackClick(): void {
-        navigate(`/groups/${groupId}/projects/${projectId}/editor/questionnaires`)
-    }
+    navigate(`/groups/${groupId}/projects/${projectId}/editor/questionnaires`)
+  }
 
   return (
     <Grid container spacing={2} justifyContent={"center"} alignItems={"top"}>
@@ -213,10 +228,10 @@ export default function EditorQuestionnaireSubmissions() {
         {questionnaireSubmissions?.length
           ?
           <UserQuestionnaireSubmissionList questionnaireSubmissions={questionnaireSubmissions}
-                                             maxPoints={false}
-                                             onDeleteClick={handleDeleteClick}
-           onSelectClick={handleQuestionnaireSubmissionSelect}
-           selectedQuestionnaireSubmissionLoading={selectedQuestionnaireSubmissionLoading}/>
+                                           maxPoints={false}
+                                           onDeleteClick={handleDeleteClick}
+                                           onSelectClick={handleQuestionnaireSubmissionSelect}
+                                           selectedQuestionnaireSubmissionLoading={selectedQuestionnaireSubmissionLoading}/>
           : <Card>
             <CardHeader title={"No submissions were found for this questionnaire."}/>
           </Card>}

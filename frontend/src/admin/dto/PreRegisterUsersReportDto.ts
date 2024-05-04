@@ -1,12 +1,10 @@
 export interface PreRegisterUsersReportDto {
   totalUsers: number;
   updatedUsers: PreRegisterUserInternalDto[];
-  createdUsers: PreRegisterUserInternalDto[];
-  failedUsers: Map<PreRegisterUserInternalDto, string>;
+  invitedUsers: PreRegisterUserInternalDto[];
+  failedUsers: Map<string, string>;
 }
 
 interface PreRegisterUserInternalDto {
   username: string;
-  fullName:string;
-  email: string;
 }

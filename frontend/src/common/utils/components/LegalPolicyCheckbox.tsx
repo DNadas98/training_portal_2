@@ -12,9 +12,12 @@ export default function LegalPolicyCheckbox() {
   const handleDialogOpen = () => {
     setHasRead(true);
     dialog.openDialog({
-      confirmText: localized("common.accept"), cancelText: localized("common.close"), onConfirm: () => {
+      confirmText: localized("common.accept"),
+      cancelText: localized("common.close"),
+      onConfirm: () => {
         setAccepted(true);
-      }, content: <LegalPolicy/>
+      },
+      content: <LegalPolicy/>
     });
   }
 
@@ -27,8 +30,10 @@ export default function LegalPolicyCheckbox() {
   }
 
   return (
-    <Stack direction={"row"} alignItems={"center"} justifyContent={"left"} spacing={0.5} flexWrap={"wrap"}>
-      <Checkbox name={"legalPolicyAccepted"} onChange={handleChange} checked={accepted} required sx={{m: 0, p: 0}}/>
+    <Stack direction={"row"} alignItems={"center"} justifyContent={"left"} spacing={0.5}
+           flexWrap={"wrap"}>
+      <Checkbox name={"legalPolicyAccepted"} onChange={handleChange} checked={accepted} required
+                sx={{m: 0, p: 0}}/>
       <Typography variant={"body2"} alignItems={"baseline"}>
         {localized("inputs.i_accept_the")}{" "}
       </Typography>

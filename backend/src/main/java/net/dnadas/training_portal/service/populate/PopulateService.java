@@ -167,9 +167,7 @@ public class PopulateService {
     IntStream.range(0, TEST_MEMBERS_COUNT).parallel().forEach(index -> {
       ApplicationUser applicationUser = new ApplicationUser(
         getUsername("testUser", index, TEST_MEMBERS_COUNT),
-        "user" + index + "@test.test",
-        passwordEncoder.encode("testuser" + index + "password"),
-        "Test User " + index);
+        passwordEncoder.encode("testuser" + index + "password"));
       ApplicationUser savedUser = applicationUserDao.save(applicationUser);
       synchronized (users) {
         users.add(savedUser);
@@ -183,9 +181,7 @@ public class PopulateService {
     IntStream.range(0, TEST_EDITORS_COUNT).parallel().forEach(index -> {
       ApplicationUser applicationUser = new ApplicationUser(
         getUsername("testEditor", index, TEST_EDITORS_COUNT),
-        "editor" + index + "@test.test",
-        passwordEncoder.encode("testeditor" + index + "password"),
-        "Test Editor " + index);
+        passwordEncoder.encode("testeditor" + index + "password"));
       ApplicationUser savedUser = applicationUserDao.save(applicationUser);
       synchronized (users) {
         users.add(savedUser);

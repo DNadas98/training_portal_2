@@ -1,6 +1,17 @@
-import {Button, Card, CardActions, CardContent, CardHeader, Grid, Stack, Typography,} from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import UserQuestionnaireSubmissionList from "./UserQuestionnaireSubmissionList.tsx";
-import {QuestionnaireSubmissionResponseDto} from "../../../../dto/QuestionnaireSubmissionResponseDto.ts";
+import {
+  QuestionnaireSubmissionResponseDto
+} from "../../../../dto/QuestionnaireSubmissionResponseDto.ts";
 import QuestionnaireSubmissionCard from "./QuestionnaireSubmissionCard.tsx";
 import BackButton from "../../../../../common/utils/components/BackButton.tsx";
 import URLQueryPagination from "../../../../../common/pagination/URLQueryPagination.tsx";
@@ -13,12 +24,11 @@ interface UserQuestionnaireSubmissionBrowserProps {
   totalPages: number,
   page: number,
   size: number,
-
-  onDeleteClick(id): void,
-
   onQuestionnaireSubmissionSelectClick: (id: number) => Promise<void>,
   selectedQuestionnaireSubmissionLoading: boolean,
   handleBackClick: MouseEventHandler<HTMLAnchorElement> | undefined | MouseEventHandler<HTMLButtonElement>
+
+  onDeleteClick(id): void,
 }
 
 export default function UserQuestionnaireSubmissionBrowser(props: UserQuestionnaireSubmissionBrowserProps) {
@@ -33,7 +43,7 @@ export default function UserQuestionnaireSubmissionBrowser(props: UserQuestionna
             <QuestionnaireSubmissionCard submission={props.maxPointQuestionnaireSubmission}/>
             <CardActions>
               <Button onClick={() => {
-                props.onQuestionnaireSubmissionSelectClick(props.maxPointQuestionnaireSubmission.id as unknown as number)
+                props.onQuestionnaireSubmissionSelectClick(props?.maxPointQuestionnaireSubmission?.id as unknown as number).then();
               }}
                       disabled={props.selectedQuestionnaireSubmissionLoading}>
                 {localized("common.view_details")}
@@ -57,11 +67,12 @@ export default function UserQuestionnaireSubmissionBrowser(props: UserQuestionna
               </Grid>
             </CardContent>
           </Card>
-            <UserQuestionnaireSubmissionList questionnaireSubmissions={props.questionnaireSubmissions}
-                                             onSelectClick={props.onQuestionnaireSubmissionSelectClick}
-                                             selectedQuestionnaireSubmissionLoading={props.selectedQuestionnaireSubmissionLoading}
-                                             maxPoints={false}
-                                             onDeleteClick={props.onDeleteClick}/>
+            <UserQuestionnaireSubmissionList
+              questionnaireSubmissions={props.questionnaireSubmissions}
+              onSelectClick={props.onQuestionnaireSubmissionSelectClick}
+              selectedQuestionnaireSubmissionLoading={props.selectedQuestionnaireSubmissionLoading}
+              maxPoints={false}
+              onDeleteClick={props.onDeleteClick}/>
             <Card><CardActions>
               <BackButton text={localized("questionnaire.back_to_questionnaires")}/>
             </CardActions></Card>
@@ -72,7 +83,7 @@ export default function UserQuestionnaireSubmissionBrowser(props: UserQuestionna
               <BackButton text={localized("questionnaire.back_to_questionnaires")}/>
             </CardContent>
           </Card> : <Card><CardActions>
-              <BackButton text={localized("questionnaire.back_to_questionnaires")}/>
+            <BackButton text={localized("questionnaire.back_to_questionnaires")}/>
           </CardActions></Card>}
       </Grid>
     </Grid>

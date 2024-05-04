@@ -294,7 +294,8 @@ export default function ProjectAssignedMembers() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button sx={{width: "fit-content"}} onClick={() => navigate(`/groups/${groupId}/projects/${projectId}`)}>
+          <Button sx={{width: "fit-content"}}
+                  onClick={() => navigate(`/groups/${groupId}/projects/${projectId}`)}>
             Back to project
           </Button>
         </CardActions>
@@ -308,18 +309,20 @@ export default function ProjectAssignedMembers() {
                 <Grid container spacing={2} alignItems={"center"} justifyContent={"center"}>
                   <Grid item xs={12} md={true}>
                     <TextField type={"search"}
-                               placeholder={"Search by username or full name"}
+                               placeholder={"Search by username"}
                                fullWidth
                                value={usernameSearchValue}
                                onChange={handleUserSearch}/>
                   </Grid>
                   <Grid item xs={12} md={"auto"}>
-                    <URLQueryPagination totalPages={totalPages} defaultPage={1} onPageChange={handlePageChange}
+                    <URLQueryPagination totalPages={totalPages} defaultPage={1}
+                                        onPageChange={handlePageChange}
                                         onSizeChange={handleSizeChange}/>
                   </Grid>
                 </Grid>
                 <Grid item xs={12} sm={"auto"}>
-                  <Select value={displayedPermissionType} onChange={handleDisplayedPermissionTypeChange}
+                  <Select value={displayedPermissionType}
+                          onChange={handleDisplayedPermissionTypeChange}
                           sx={{minWidth: 150}}>
                     <MenuItem value={PermissionType.PROJECT_ASSIGNED_MEMBER}><Typography>
                       All Members
@@ -346,7 +349,6 @@ export default function ProjectAssignedMembers() {
                     <TableHead>
                       <TableRow>
                         <TableCell>Username</TableCell>
-                        <TableCell>Full Name</TableCell>
                         <TableCell align="right">Member</TableCell>
                         <TableCell align="right">Editor</TableCell>
                         <TableCell align="right">Coordinator</TableCell>
@@ -367,7 +369,7 @@ export default function ProjectAssignedMembers() {
                               : ""}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            {user.fullName}
+                            {user.username}
                           </TableCell>
                           <TableCell align="right" component="th" scope="row">
                             <Tooltip title={isGroupAdminOrEditor(user.permissions)

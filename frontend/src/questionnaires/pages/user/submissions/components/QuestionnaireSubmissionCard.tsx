@@ -1,8 +1,13 @@
 import {CardContent, Divider, Grid, Stack, Typography} from "@mui/material";
-import useLocalizedDateTime from "../../../../../common/localization/hooks/useLocalizedDateTime.tsx";
-import {QuestionnaireSubmissionResponseEditorDto} from "../../../../dto/QuestionnaireSubmissionResponseEditorDto.ts";
+import useLocalizedDateTime
+  from "../../../../../common/localization/hooks/useLocalizedDateTime.tsx";
+import {
+  QuestionnaireSubmissionResponseEditorDto
+} from "../../../../dto/QuestionnaireSubmissionResponseEditorDto.ts";
 import IsSmallScreen from "../../../../../common/utils/IsSmallScreen.tsx";
-import {QuestionnaireSubmissionResponseDto} from "../../../../dto/QuestionnaireSubmissionResponseDto.ts";
+import {
+  QuestionnaireSubmissionResponseDto
+} from "../../../../dto/QuestionnaireSubmissionResponseDto.ts";
 import useLocalized from "../../../../../common/localization/hooks/useLocalized.tsx";
 
 interface QuestionnaireSubmissionCardProps {
@@ -21,7 +26,8 @@ export default function QuestionnaireSubmissionCard(props: QuestionnaireSubmissi
             {props.submission.receivedPoints} / {props.submission.maxPoints} {localized("common.points")}
           </Typography>
         </Grid>
-        {!isSmallScreen ? <Grid item><Divider variant={"fullWidth"} orientation={"vertical"}/></Grid> : <></>}
+        {!isSmallScreen ?
+          <Grid item><Divider variant={"fullWidth"} orientation={"vertical"}/></Grid> : <></>}
         <Grid item xs={12} sm={"auto"}>
           <Typography variant={"body1"} sx={{
             wordBreak: "break-word",
@@ -30,7 +36,8 @@ export default function QuestionnaireSubmissionCard(props: QuestionnaireSubmissi
             {getLocalizedDateTime(new Date(props.submission.createdAt))}
           </Typography>
         </Grid>
-        {!isSmallScreen ? <Grid item><Divider variant={"fullWidth"} orientation={"vertical"}/></Grid> : <></>}
+        {!isSmallScreen ?
+          <Grid item><Divider variant={"fullWidth"} orientation={"vertical"}/></Grid> : <></>}
         {props.submission?.status
           ? <Grid item xs={12} sm={"auto"}>
             <Typography variant={"body1"} sx={{

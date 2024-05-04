@@ -146,13 +146,18 @@ export default function GroupDashboard() {
           }
           {(groupPermissions.includes(PermissionType.GROUP_ADMIN))
             && <Grid item xs={12} md={true}><Card sx={{minHeight: "100%"}}>
-              <CardHeader title={"Group Administrator Actions"} titleTypographyProps={{variant: "h6"}}/>
+              <CardHeader title={"Group Administrator Actions"}
+                          titleTypographyProps={{variant: "h6"}}/>
               <CardActions>
                 <Stack spacing={2}>
-                  <Button onClick={handleJoinRequestClick} sx={{width:"fit-content"}}>View group join requests</Button>
-                  <Button onClick={handlePreRegisterClick} sx={{width:"fit-content"}}>Manage members</Button>
+                  <Button onClick={handleJoinRequestClick} sx={{width: "fit-content"}}>View group
+                    join
+                    requests</Button>
+                  <Button onClick={handlePreRegisterClick} sx={{width: "fit-content"}}>Manage
+                    members</Button>
                   {!authentication.getRoles()?.includes(GlobalRole.ADMIN) ? <></> :
-                    <Button sx={{width: "fit-content"}} onClick={handleDeleteGroupClick}>Delete Group</Button>
+                    <Button sx={{width: "fit-content"}} onClick={handleDeleteGroupClick}>Delete
+                      Group</Button>
                   }
                 </Stack>
               </CardActions>

@@ -8,8 +8,6 @@ import {useDialog} from "../../../common/dialog/context/DialogProvider.tsx";
 import {useNavigate} from "react-router-dom";
 import {UserPasswordUpdateDto} from "../../dto/UserPasswordUpdateDto.ts";
 import useRefresh from "../../../authentication/hooks/useRefresh.ts";
-import {UserFullNameUpdateDto} from "../../dto/UserFullNameUpdateDto.ts";
-import {UserEmailUpdateDto} from "../../dto/UserEmailUpdateDto.ts";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
 import {passwordRegex} from "../../../common/utils/regex.ts";
 import useLocalized from "../../../common/localization/hooks/useLocalized.tsx";
@@ -21,9 +19,7 @@ export default function Profile() {
   const dialog = useDialog();
   const notification = useNotification();
   const username = authentication.getUsername();
-  const fullName = authentication.getFullName();
   const roles = authentication.getRoles();
-  const email = authentication.getEmail();
   const logout = useLogout();
   const refresh = useRefresh();
   const navigate = useNavigate();
@@ -59,40 +55,7 @@ export default function Profile() {
     });
   }
 
-  const [fullNameFormOpen, setFullNameFormOpen] = useState<boolean>(false);
-  const [emailFormOpen, setEmailFormOpen] = useState<boolean>(false);
   const [passwordFormOpen, setPasswordFormOpen] = useState<boolean>(false);
-
-  async function handleFullNameUpdate(event: any) {
-    const defaultError = localized("pages.user.profile.error.update_full_name_default");
-    try {
-      event.preventDefault();
-      setUserDetailsUpdateLoading(true);
-      const formData = new FormData(event.target);
-      const dto: UserFullNameUpdateDto = {
-        fullName: formData.get("fullName") as string,
-        password: formData.get("password") as string,
-      }
-      if (!passwordRegex.test(dto.password)) {
-        return notifyOnError(localized("inputs.password_invalid"));
-      }
-      const response = await authJsonFetch({
-        path: `user/fullName`, method: "PATCH", body: dto
-      });
-      if (response?.status !== 200 || !response.message) {
-        return notifyOnError(response?.error ?? defaultError);
-      }
-      notification.openNotification({
-        type: "success", vertical: "top", horizontal: "center", message: response.message
-      });
-      setFullNameFormOpen(false);
-      await refresh();
-    } catch (e) {
-      return notifyOnError(defaultError);
-    } finally {
-      setUserDetailsUpdateLoading(false);
-    }
-  }
 
   async function handleUserPasswordUpdate(event: any) {
     const defaultError = localized("pages.user.profile.error.update_password_default");
@@ -129,41 +92,6 @@ export default function Profile() {
     }
   }
 
-  async function handleUserEmailUpdate(event: any) {
-    const defaultError = localized("pages.user.profile.error.update_email_default");
-    try {
-      event.preventDefault();
-      setUserDetailsUpdateLoading(true);
-      const formData = new FormData(event.target);
-      const dto: UserEmailUpdateDto = {
-        email: formData.get("email") as string,
-        password: formData.get("password") as string,
-      }
-      if (!passwordRegex.test(dto.password)) {
-        return notifyOnError(localized("inputs.password_invalid"));
-      }
-      if (dto.email === email) {
-        notifyOnError(localized("update_email_matches_current"));
-        setEmailFormOpen(false);
-      }
-      const response = await authJsonFetch({
-        path: `user/email`, method: "PATCH", body: dto
-      });
-      if (response?.status !== 200 || !response.message) {
-        return notifyOnError(response?.error ?? defaultError);
-      }
-      notification.openNotification({
-        type: "success", vertical: "top", horizontal: "center", message: response.message
-      });
-      setEmailFormOpen(false);
-      await logout(true);
-    } catch (e) {
-      return notifyOnError(defaultError);
-    } finally {
-      setUserDetailsUpdateLoading(false);
-    }
-  }
-
   function notifyOnError(message: string) {
     notification.openNotification({
       type: "error", vertical: "top", horizontal: "center",
@@ -174,22 +102,14 @@ export default function Profile() {
 
   return userDetailsUpdateLoading || applicationUserDeleteLoading
     ? <LoadingSpinner/>
-    : username && email && roles ? (
-      <ProfileDashboard fullName={fullName ?? ""}
-                        username={username}
-                        email={email}
+    : username && roles ? (
+      <ProfileDashboard username={username}
                         roles={roles}
                         onApplicationUserDelete={openDeleteApplicationUserDialog}
                         applicationUserDeleteLoading={applicationUserDeleteLoading}
-                        handleFullNameUpdate={handleFullNameUpdate}
-                        handleUserEmailUpdate={handleUserEmailUpdate}
                         handleUserPasswordUpdate={handleUserPasswordUpdate}
-                        fullNameFormOpen={fullNameFormOpen}
-                        setFullNameFormOpen={setFullNameFormOpen}
                         passwordFormOpen={passwordFormOpen}
                         setPasswordFormOpen={setPasswordFormOpen}
-                        emailFormOpen={emailFormOpen}
-                        setEmailFormOpen={setEmailFormOpen}
                         onRequestsClick={() => {
                           navigate("/user/requests")
                         }}

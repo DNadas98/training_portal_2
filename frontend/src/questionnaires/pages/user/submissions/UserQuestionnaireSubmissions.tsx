@@ -4,13 +4,18 @@ import usePermissions from "../../../../authentication/hooks/usePermissions.ts";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useNotification} from "../../../../common/notification/context/NotificationProvider.tsx";
 import {isValidId} from "../../../../common/utils/isValidId.ts";
-import UserQuestionnaireSubmissionBrowser from "./components/UserQuestionnaireSubmissionBrowser.tsx";
-import {QuestionnaireSubmissionResponseDto} from "../../../dto/QuestionnaireSubmissionResponseDto.ts";
+import UserQuestionnaireSubmissionBrowser
+  from "./components/UserQuestionnaireSubmissionBrowser.tsx";
+import {
+  QuestionnaireSubmissionResponseDto
+} from "../../../dto/QuestionnaireSubmissionResponseDto.ts";
 import useAuthJsonFetch from "../../../../common/api/hooks/useAuthJsonFetch.tsx";
 import {ApiResponsePageableDto} from "../../../../common/api/dto/ApiResponsePageableDto.ts";
 import {useDialog} from "../../../../common/dialog/context/DialogProvider.tsx";
 import QuestionnaireSubmissionDetails from "./components/QuestionnaireSubmissionDetails.tsx";
-import {QuestionnaireSubmissionResponseDetailsDto} from "../../../dto/QuestionnaireSubmissionResponseDetailsDto.ts";
+import {
+  QuestionnaireSubmissionResponseDetailsDto
+} from "../../../dto/QuestionnaireSubmissionResponseDetailsDto.ts";
 import useLocalized from "../../../../common/localization/hooks/useLocalized.tsx";
 
 export default function UserQuestionnaireSubmissions() {
@@ -107,7 +112,10 @@ export default function UserQuestionnaireSubmissions() {
       });
       if (!response?.status || response.status > 399 || !response?.data) {
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: response?.error ?? defaultError
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: response?.error ?? defaultError
         });
         return;
       }
@@ -146,7 +154,10 @@ export default function UserQuestionnaireSubmissions() {
       });
       if (!response?.status || response.status > 399 || !response?.message) {
         notification.openNotification({
-          type: "error", vertical: "top", horizontal: "center", message: `${response?.error ?? defaultError}`
+          type: "error",
+          vertical: "top",
+          horizontal: "center",
+          message: `${response?.error ?? defaultError}`
         });
         return;
       }
@@ -191,7 +202,7 @@ export default function UserQuestionnaireSubmissions() {
       selectedQuestionnaireSubmissionLoading={selectedQuestionnaireSubmissionLoading}
       maxPointQuestionnaireSubmission={maxPointQuestionnaireSubmission}
       totalPages={totalPages}
-      page={page} size={size}
+      page={page as unknown as number} size={size as unknown as number}
       onDeleteClick={handleDeleteClick}
       handleBackClick={() => navigate(`/groups/${groupId}/projects/${projectId}`)}/>
   );

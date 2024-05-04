@@ -47,7 +47,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
 
   @Query(
     "SELECT new net.dnadas.training_portal.dto.user.UserResponseWithProjectAndGroupPermissionsInternalDto(" +
-      "u.id, u.username, u.fullName, " +
+      "u.id, u.username, " +
       "CASE WHEN u MEMBER OF p.admins THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.coordinators THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.editors THEN TRUE ELSE FALSE END, " +
@@ -57,7 +57,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
       "JOIN p.userGroup g " +
       "JOIN p.assignedMembers u " +
       "WHERE p.id = :projectId AND g.id = :groupId " +
-      "AND (LOWER(u.username) LIKE %:search% OR LOWER(u.fullName) LIKE %:search% )" +
+      "AND LOWER(u.username) LIKE %:search% " +
       "ORDER BY u.username ASC")
   Page<UserResponseWithProjectAndGroupPermissionsInternalDto> findMembersWithPermissionsByProjectIdAndGroupIdAndSearch(
     @Param("projectId") Long projectId,
@@ -67,7 +67,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
 
   @Query(
     "SELECT new net.dnadas.training_portal.dto.user.UserResponseWithProjectAndGroupPermissionsInternalDto(" +
-      "u.id, u.username, u.fullName, " +
+      "u.id, u.username, " +
       "CASE WHEN u MEMBER OF p.admins THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.coordinators THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.editors THEN TRUE ELSE FALSE END, " +
@@ -77,7 +77,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
       "JOIN p.userGroup g " +
       "JOIN p.editors u " +
       "WHERE p.id = :projectId AND g.id = :groupId " +
-      "AND (LOWER(u.username) LIKE %:search% OR LOWER(u.fullName) LIKE %:search% )" +
+      "AND LOWER(u.username) LIKE %:search% " +
       "ORDER BY u.username ASC")
   Page<UserResponseWithProjectAndGroupPermissionsInternalDto> findEditorsWithPermissionsByProjectIdAndGroupIdAndSearch(
     @Param("projectId") Long projectId,
@@ -87,7 +87,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
 
   @Query(
     "SELECT new net.dnadas.training_portal.dto.user.UserResponseWithProjectAndGroupPermissionsInternalDto(" +
-      "u.id, u.username, u.fullName, " +
+      "u.id, u.username, " +
       "CASE WHEN u MEMBER OF p.admins THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.coordinators THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.editors THEN TRUE ELSE FALSE END, " +
@@ -97,7 +97,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
       "JOIN p.userGroup g " +
       "JOIN p.admins u " +
       "WHERE p.id = :projectId AND g.id = :groupId " +
-      "AND (LOWER(u.username) LIKE %:search% OR LOWER(u.fullName) LIKE %:search% )" +
+      "AND LOWER(u.username) LIKE %:search% " +
       "ORDER BY u.username ASC")
   Page<UserResponseWithProjectAndGroupPermissionsInternalDto> findAdminsWithPermissionsByProjectIdAndGroupIdAndSearch(
     @Param("projectId") Long projectId,
@@ -107,7 +107,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
 
   @Query(
     "SELECT new net.dnadas.training_portal.dto.user.UserResponseWithProjectAndGroupPermissionsInternalDto(" +
-      "u.id, u.username, u.fullName, " +
+      "u.id, u.username, " +
       "CASE WHEN u MEMBER OF p.admins THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.coordinators THEN TRUE ELSE FALSE END, " +
       "CASE WHEN u MEMBER OF p.editors THEN TRUE ELSE FALSE END, " +
@@ -117,7 +117,7 @@ public interface ProjectDao extends JpaRepository<Project, Long> {
       "JOIN p.userGroup g " +
       "JOIN p.coordinators u " +
       "WHERE p.id = :projectId AND g.id = :groupId " +
-      "AND (LOWER(u.username) LIKE %:search% OR LOWER(u.fullName) LIKE %:search% )" +
+      "AND LOWER(u.username) LIKE %:search% " +
       "ORDER BY u.username ASC")
   Page<UserResponseWithProjectAndGroupPermissionsInternalDto> findCoordinatorsWithPermissionsByProjectIdAndGroupIdAndSearch(
     @Param("projectId") Long projectId,

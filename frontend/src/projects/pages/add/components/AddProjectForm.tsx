@@ -5,7 +5,8 @@ import ProjectNameInput from "../../../components/ProjectNameInput.tsx";
 import ProjectDescriptionInput from "../../../components/ProjectDescriptionInput.tsx";
 import StartDateInput from "../../../../common/utils/components/StartDateInput.tsx";
 import DeadlineInput from "../../../../common/utils/components/DeadlineInput.tsx";
-import RichTextEditorUncontrolled from "../../../../common/richTextEditor/RichTextEditorUncontrolled.tsx";
+import RichTextEditorUncontrolled
+  from "../../../../common/richTextEditor/RichTextEditorUncontrolled.tsx";
 
 interface AddGroupFormProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>

@@ -1,5 +1,7 @@
 import {ProjectResponsePublicDto} from "../../../../projects/dto/ProjectResponsePublicDto.ts";
-import {QuestionnaireResponseEditorDto} from "../../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
+import {
+  QuestionnaireResponseEditorDto
+} from "../../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
 import {
   Autocomplete,
   Avatar,

@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import {FormEvent} from "react";
 import {QuestionnaireResponseEditorDto} from "../../../../dto/QuestionnaireResponseEditorDto.ts";
-import useLocalizedDateTime from "../../../../../common/localization/hooks/useLocalizedDateTime.tsx";
+import useLocalizedDateTime
+  from "../../../../../common/localization/hooks/useLocalizedDateTime.tsx";
 import LoadingSpinner from "../../../../../common/utils/components/LoadingSpinner.tsx";
 import ExpandIcon from "../../../../../common/utils/components/ExpandIcon.tsx";
 //import RichTextDisplay from "../../../../../common/richTextEditor/RichTextDisplay.tsx";
@@ -80,11 +81,11 @@ export default function CoordinatorQuestionnaireBrowser(props: CoordinatorQuesti
                       {/*<RichTextDisplay content={questionnaire.description}/>*/}
                       <Divider sx={{marginTop: 2, marginBottom: 2}}/>
                       <Typography variant={"body2"}>
-                        {localized("statistics.created_at")}: {getLocalizedDateTime(questionnaire.createdAt)} by {questionnaire.createdBy.fullName}
+                        {localized("statistics.created_at")}: {getLocalizedDateTime(questionnaire.createdAt)} by {questionnaire.createdBy.username}
                       </Typography>
                       <Divider sx={{marginTop: 1, marginBottom: 1}}/>
                       <Typography variant={"body2"}>
-                        {localized("statistics.updated_at")}: {getLocalizedDateTime(questionnaire.updatedAt)} by {questionnaire.updatedBy.fullName}
+                        {localized("statistics.updated_at")}: {getLocalizedDateTime(questionnaire.updatedAt)} by {questionnaire.updatedBy.username}
                       </Typography>
                       <Divider sx={{marginTop: 1, marginBottom: 1}}/>
                       <Typography>{localized("statistics.status")}: {questionnaire.status.toString() === "ACTIVE" ? localized("statistics.active") : localized("statistics.test")}</Typography>
@@ -112,7 +113,7 @@ export default function CoordinatorQuestionnaireBrowser(props: CoordinatorQuesti
               </Card>
           }
           <Card><CardActions>
-            <Button sx={{width:"fit-content"}} onClick={props.handleBackClick}>
+            <Button sx={{width: "fit-content"}} onClick={props.handleBackClick}>
               {localized("statistics.back_to_project")}
             </Button>
           </CardActions></Card>

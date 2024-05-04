@@ -150,7 +150,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
   @Transactional(readOnly = true)
   public boolean handleTaskPermissions(
     Long userId, Task task, PermissionType permissionType) {
-    if (permissionType != null && permissionType == PermissionType.TASK_ASSIGNED_MEMBER) {
+    if (permissionType == PermissionType.TASK_ASSIGNED_MEMBER) {
       return hasTaskAssignedMemberAccess(userId, task);
     }
     return false;

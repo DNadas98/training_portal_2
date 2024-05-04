@@ -21,8 +21,9 @@ public class QuestionnaireController {
   @GetMapping("/all")
   public ResponseEntity<?> getAllQuestionnaires(
     @PathVariable Long groupId, @PathVariable Long projectId) {
-    List<QuestionnaireResponseEditorDto> questionnaires = questionnaireService.getQuestionnairesOfProject(
-      groupId, projectId);
+    List<QuestionnaireResponseEditorDto> questionnaires =
+      questionnaireService.getQuestionnairesOfProject(
+        groupId, projectId);
     return ResponseEntity.status(HttpStatus.OK).body(Map.of("data", questionnaires));
   }
 

@@ -3,7 +3,6 @@ package net.dnadas.training_portal.controller;
 import lombok.RequiredArgsConstructor;
 import net.dnadas.training_portal.dto.group.project.questionnaire.QuestionnaireResponseEditorDto;
 import net.dnadas.training_portal.service.group.project.questionnaire.QuestionnaireService;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CoordinatorQuestionnaireController {
   private final QuestionnaireService questionnaireService;
-  private final MessageSource messageSource;
 
   @GetMapping
   public ResponseEntity<?> getQuestionnaires(

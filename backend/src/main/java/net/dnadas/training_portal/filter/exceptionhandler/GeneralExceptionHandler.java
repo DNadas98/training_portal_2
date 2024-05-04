@@ -14,8 +14,8 @@ import net.dnadas.training_portal.exception.group.project.questionnaire.Question
 import net.dnadas.training_portal.exception.group.project.questionnaire.QuestionnaireNotFoundException;
 import net.dnadas.training_portal.exception.group.project.task.TaskNotFoundException;
 import net.dnadas.training_portal.exception.user.ExpirationDateNotWithinSpecifiedException;
+import net.dnadas.training_portal.exception.user.InvitationExpiredException;
 import net.dnadas.training_portal.exception.user.PastDateExpirationDateException;
-import net.dnadas.training_portal.exception.verification.VerificationTokenAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -57,7 +57,7 @@ public class GeneralExceptionHandler {
 
   @ExceptionHandler(PastDateExpirationDateException.class)
   public ResponseEntity<?> handleInvalidExpirationDateException(
-    PastDateExpirationDateException e,Locale locale) {
+    PastDateExpirationDateException e, Locale locale) {
     String message = e.getMessage();
     logger.error(message);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -66,24 +66,26 @@ public class GeneralExceptionHandler {
 
   @ExceptionHandler(ExpirationDateNotWithinSpecifiedException.class)
   public ResponseEntity<?> handleInvalidExpirationDateException(
-    ExpirationDateNotWithinSpecifiedException e,Locale locale) {
+    ExpirationDateNotWithinSpecifiedException e, Locale locale) {
     String message = e.getMessage();
     logger.error(message);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-      Map.of("error", messageSource.getMessage("error.user.expiration_date.not_within_specified", null, locale)));
+      Map.of(
+        "error",
+        messageSource.getMessage("error.user.expiration_date.not_within_specified", null, locale)));
   }
 
   // 401
 
   @ExceptionHandler(UnauthorizedException.class)
-  public ResponseEntity<?> handleCustomUnauthorized(UnauthorizedException e,Locale locale) {
+  public ResponseEntity<?> handleCustomUnauthorized(UnauthorizedException e, Locale locale) {
     logger.error(e.getMessage() == null ? "Unauthorized" : e.getMessage());
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
       Map.of("error", messageSource.getMessage("error.auth.unauthorized", null, locale)));
   }
 
   @ExceptionHandler(UsernameNotFoundException.class)
-  public ResponseEntity<?> handleCustomUnauthorized(UsernameNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleCustomUnauthorized(UsernameNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
       Map.of("error", messageSource.getMessage("error.auth.unauthorized", null, locale)));
@@ -98,13 +100,21 @@ public class GeneralExceptionHandler {
   }
 
   @ExceptionHandler(AuthenticationException.class)
-  public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e,Locale locale) {
+  public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-    Map.of("error", messageSource.getMessage("error.auth.invalid_credentials", null, locale)));
+      Map.of("error", messageSource.getMessage("error.auth.invalid_credentials", null, locale)));
   }
 
   // 403
+
+  @ExceptionHandler(InvitationExpiredException.class)
+  public ResponseEntity<?> handleInvitationExpiredException(
+    InvitationExpiredException e, Locale locale) {
+    logger.error(e.getMessage());
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+      Map.of("error", messageSource.getMessage("error.user.invitation_expired", null, locale)));
+  }
 
   @ExceptionHandler(QuestionnaireAlreadyActivatedException.class)
   public ResponseEntity<?> handleQuestionnaireAlreadyActivatedException(
@@ -113,49 +123,52 @@ public class GeneralExceptionHandler {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
       Map.of(
         "error",
-        messageSource.getMessage("questionnaire.delete.forbidden.already.activated", null, locale)));
+        messageSource.getMessage(
+          "questionnaire.delete.forbidden.already.activated", null, locale)));
   }
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-    Map.of("error", messageSource.getMessage("error.auth.access_denied", null, locale)));
+      Map.of("error", messageSource.getMessage("error.auth.access_denied", null, locale)));
   }
 
   @ExceptionHandler({PasswordVerificationFailedException.class})
   public ResponseEntity<?> handlePasswordVerificationFailedException(
-    PasswordVerificationFailedException e,Locale locale) {
+    PasswordVerificationFailedException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-    Map.of("error", messageSource.getMessage("error.auth.password_incorrect", null, locale)));
+      Map.of("error", messageSource.getMessage("error.auth.password_incorrect", null, locale)));
   }
 
   // 404
 
   @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<?> handleCustomUnauthorized(UserNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleCustomUnauthorized(UserNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
       Map.of("error", messageSource.getMessage("error.user.not_found", null, locale)));
   }
 
   @ExceptionHandler(GroupNotFoundException.class)
-  public ResponseEntity<?> handleGroupNotFound(GroupNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleGroupNotFound(GroupNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-      Map.of("error", messageSource.getMessage("error.group.not_found", null,locale)));
+      Map.of("error", messageSource.getMessage("error.group.not_found", null, locale)));
   }
 
   @ExceptionHandler(GroupJoinRequestNotFoundException.class)
-  public ResponseEntity<?> handleGroupJoinRequestNotFound(GroupJoinRequestNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleGroupJoinRequestNotFound(
+    GroupJoinRequestNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-      Map.of("error", messageSource.getMessage("error.group.join_request.not_found", null, locale)));
+      Map.of(
+        "error", messageSource.getMessage("error.group.join_request.not_found", null, locale)));
   }
 
   @ExceptionHandler(ProjectNotFoundException.class)
-  public ResponseEntity<?> handleProjectNotFound(ProjectNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleProjectNotFound(ProjectNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
       Map.of("error", messageSource.getMessage("error.project.not_found", null, locale)));
@@ -163,21 +176,23 @@ public class GeneralExceptionHandler {
 
   @ExceptionHandler(ProjectJoinRequestNotFoundException.class)
   public ResponseEntity<?> handleProjectJoinRequestNotFoundException(
-    ProjectJoinRequestNotFoundException e,Locale locale) {
+    ProjectJoinRequestNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-      Map.of("error", messageSource.getMessage("error.project.join_request.not_found", null, locale)));
+      Map.of(
+        "error", messageSource.getMessage("error.project.join_request.not_found", null, locale)));
   }
 
   @ExceptionHandler(TaskNotFoundException.class)
-  public ResponseEntity<?> handleTaskNotFoundException(TaskNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleTaskNotFoundException(TaskNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
       Map.of("error", messageSource.getMessage("error.task.not_found", null, locale)));
   }
 
   @ExceptionHandler(QuestionnaireNotFoundException.class)
-  public ResponseEntity<?> handleQuestionnaireNotFoundException(QuestionnaireNotFoundException e,Locale locale) {
+  public ResponseEntity<?> handleQuestionnaireNotFoundException(
+    QuestionnaireNotFoundException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
       Map.of("error", messageSource.getMessage("error.questionnaire.not_found", null, locale)));
@@ -187,31 +202,25 @@ public class GeneralExceptionHandler {
 
   @ExceptionHandler(DuplicateGroupJoinRequestException.class)
   public ResponseEntity<?> handleDuplicateGroupJoinRequest(
-    DuplicateGroupJoinRequestException e,Locale locale) {
+    DuplicateGroupJoinRequestException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(
-      Map.of("error", messageSource.getMessage("error.group.join_request.duplicate", null,locale)));
+      Map.of(
+        "error", messageSource.getMessage("error.group.join_request.duplicate", null, locale)));
   }
 
   @ExceptionHandler(DuplicateProjectJoinRequestException.class)
   public ResponseEntity<?> handleDuplicateProjectJoinRequestException(
-    DuplicateProjectJoinRequestException e,Locale locale) {
+    DuplicateProjectJoinRequestException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(
-      Map.of("error", messageSource.getMessage("error.project.join_request.duplicate", null,locale)));
-  }
-
-  @ExceptionHandler(VerificationTokenAlreadyExistsException.class)
-  public ResponseEntity<?> handleVerificationTokenAlreadyExistsException(
-    VerificationTokenAlreadyExistsException e,Locale locale) {
-    logger.error(e.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(
-      Map.of("error",messageSource.getMessage("error.verification_token.duplicate", null, locale)));
+      Map.of(
+        "error", messageSource.getMessage("error.project.join_request.duplicate", null, locale)));
   }
 
   @ExceptionHandler(UserAlreadyExistsException.class)
   public ResponseEntity<?> handleUserAlreadyExistsException(
-    UserAlreadyExistsException e,Locale locale) {
+    UserAlreadyExistsException e, Locale locale) {
     logger.error(e.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(
       Map.of("error", messageSource.getMessage("error.user.duplicate", null, locale)));

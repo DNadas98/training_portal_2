@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -46,7 +45,7 @@ public class GlobalAdminPreRegistrationController {
     @RequestParam("questionnaireId") Long questionnaireId,
     @RequestParam("expiresAt") String expiresAt) {
     PreRegisterUsersReportDto reportDto = preRegistrationService.preRegisterUsers(
-      groupId, projectId, questionnaireId, file, expiresAt, Locale.of("hu", "HU"));
+      groupId, projectId, questionnaireId, file, expiresAt);
     return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("data", reportDto));
   }
 }

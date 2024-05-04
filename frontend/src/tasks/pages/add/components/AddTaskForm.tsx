@@ -55,7 +55,8 @@ export default function AddTaskForm(props: AddTaskFormProps) {
                     <TaskDescriptionInput/>
                     <StartDateInput/>
                     <DeadlineInput/>
-                    <DifficultySelector minDifficulty={props.minDifficulty} maxDifficulty={props.maxDifficulty}/>
+                    <DifficultySelector minDifficulty={props.minDifficulty}
+                                        maxDifficulty={props.maxDifficulty}/>
                     <ImportanceSelector importances={props.importances}/>
                     <TaskStatusSelector statuses={props.statuses}/>
                     <Button type={"submit"}

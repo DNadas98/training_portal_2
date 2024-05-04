@@ -149,7 +149,7 @@ export default function Projects() {
     navigate(`/groups/${groupId}/projects/create`);
   }
 
-  const handleBackClick=()=> navigate(`/groups/${groupId}`);
+  const handleBackClick = () => navigate(`/groups/${groupId}`);
 
   if (permissionsLoading) {
     return <LoadingSpinner/>;

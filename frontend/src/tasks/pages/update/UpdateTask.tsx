@@ -12,7 +12,8 @@ import {TaskUpdateRequestDto} from "../../dto/TaskUpdateRequestDto.ts";
 import UpdateTaskForm from "./components/UpdateTaskForm.tsx";
 import {isValidId} from "../../../common/utils/isValidId.ts";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
-import useLocalizedSubmittedDate from "../../../common/localization/hooks/useLocalizedSubmittedDate.tsx";
+import useLocalizedSubmittedDate
+  from "../../../common/localization/hooks/useLocalizedSubmittedDate.tsx";
 
 export default function UpdateTask() {
   const {loading: permissionsLoading, taskPermissions} = usePermissions();

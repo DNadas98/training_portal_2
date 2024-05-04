@@ -1,19 +1,19 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import {ProjectResponsePublicDto} from "../../../projects/dto/ProjectResponsePublicDto.ts";
-import {QuestionnaireResponseEditorDto} from "../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
+import {
+  QuestionnaireResponseEditorDto
+} from "../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
 import {useNotification} from "../../../common/notification/context/NotificationProvider.tsx";
 import {useDialog} from "../../../common/dialog/context/DialogProvider.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
 import useAuthFetch from "../../../common/api/hooks/useAuthFetch.tsx";
-import {Avatar, Button, Card, CardActions, CardHeader, Grid, Typography, useTheme} from "@mui/material";
+import {Grid} from "@mui/material";
 import {formatISO} from "date-fns";
 import {PreRegisterUsersReportDto} from "../../../admin/dto/PreRegisterUsersReportDto.ts";
-import UserPreRegistrationReport from "../../../admin/pages/adminDashboard/components/UserPreRegistrationReport.tsx";
-import {CompletionMailReportDto} from "../../../admin/dto/CompletionMailReportDto.ts";
-import CompletionMailReport from "../../../admin/pages/adminDashboard/components/CompletionMailReport.tsx";
+import UserPreRegistrationReport
+  from "../../../admin/pages/adminDashboard/components/UserPreRegistrationReport.tsx";
 import LoadingSpinner from "../../../common/utils/components/LoadingSpinner.tsx";
-import {MailRounded} from "@mui/icons-material";
 import {isValidId} from "../../../common/utils/isValidId.ts";
 import GroupAdminUserPreRegistrationForm from "./components/GroupAdminUserPreRegistrationForm.tsx";
 import usePermissions from "../../../authentication/hooks/usePermissions.ts";
@@ -44,7 +44,6 @@ export default function GroupAdminDashboard() {
   const navigate = useNavigate();
   const authJsonFetch = useAuthJsonFetch();
   const authFetch = useAuthFetch();
-  const theme = useTheme();
   const {loading: permissionsLoading, groupPermissions} = usePermissions();
 
   const openErrorNotification = (message: string) => notification.openNotification({
@@ -174,7 +173,7 @@ export default function GroupAdminDashboard() {
         path: `groups/${groupId}/pre-register/users`,
         method: 'POST',
         body: formData
-      }).then(res => !res.error?res.json():res);
+      }).then(res => !res.error ? res.json() : res);
       if (!response || response.status > 399 || !response.data) {
         openErrorNotification(response?.error ?? defaultError);
         return;
@@ -195,7 +194,7 @@ export default function GroupAdminDashboard() {
       },
       content: <UserPreRegistrationReport
         totalUsers={reportDto.totalUsers}
-        createdUsers={reportDto.createdUsers}
+        invitedUsers={reportDto.invitedUsers}
         updatedUsers={reportDto.updatedUsers}
         failedUsers={reportDto.failedUsers}/>
     });
@@ -237,43 +236,14 @@ export default function GroupAdminDashboard() {
     setExpiresAt(newValue);
   }
 
-  async function handleSendCompletionMail() {
-    const defaultError = "Failed to send successful completion e-mails";
-    try {
-      setLoading(true);
-      if (!groupId || !selectedProject || !selectedQuestionnaire) {
-        openErrorNotification("Select project and questionnaire first!")
-        return;
-      }
-      const response = await authJsonFetch({
-        path: `groups/${groupId}/completion-mail/projects/${selectedProject.projectId}`,
-        method: "POST"
-      });
-      if (!response || !response.data || response.status > 399) {
-        openErrorNotification(response?.error ?? defaultError);
-        return;
-      }
-      const reportDto: CompletionMailReportDto = response.data;
-      dialog.openDialog({
-        oneActionOnly: true, confirmText: "Ok", onConfirm: () => {
-        },
-        content: <CompletionMailReport
-          totalUsers={reportDto.totalUsers}
-          successful={reportDto.successful}
-          failed={reportDto.failed}/>
-      });
-    } catch (e) {
-      openErrorNotification(defaultError);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   if (loading || permissionsLoading) {
     return <LoadingSpinner/>;
-  } else if (!groupPermissions?.length||!groupPermissions.includes(PermissionType.GROUP_ADMIN)) {
-    notification.openNotification({type: "error", horizontal: "center", vertical: "top",
-      message: "Access Denied: Insufficient permissions"});
+  } else if (!groupPermissions?.length || !groupPermissions.includes(PermissionType.GROUP_ADMIN)) {
+    notification.openNotification({
+      type: "error", horizontal: "center", vertical: "top",
+      message: "Access Denied: Insufficient permissions"
+    });
     navigate(`/groups`, {replace: true});
     return <></>;
   }
@@ -300,21 +270,5 @@ export default function GroupAdminDashboard() {
           expiresAt={expiresAt}
           onExpiresAtChange={handleExpirationChange}/>
       </Grid>
-      <Grid item xs={10} sm={8}><Card>
-        <CardHeader title={"Send Successful Completion E-mails"}
-                    titleTypographyProps={{variant: "h6"}}
-                    subheader={<Typography variant={"body2"}>
-                      Please select the project and questionnaire in the form above!
-                    </Typography>}
-                    avatar={
-                      <Avatar variant={"rounded"} sx={{backgroundColor: theme.palette.primary.main}}>
-                        <MailRounded/>
-                      </Avatar>}/>
-        <CardActions>
-          <Button onClick={() => handleSendCompletionMail().then()}>
-            Send E-mails
-          </Button>
-        </CardActions>
-      </Card></Grid>
     </Grid>;
 }

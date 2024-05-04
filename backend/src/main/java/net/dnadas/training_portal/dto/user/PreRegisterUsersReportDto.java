@@ -5,6 +5,6 @@ import java.util.Map;
 
 public record PreRegisterUsersReportDto(
   Integer totalUsers, List<PreRegisterUserInternalDto> updatedUsers,
-  List<PreRegisterUserInternalDto> createdUsers,
-  Map<PreRegisterUserInternalDto, String> failedUsers) {
+  List<PreRegisterUserInternalDto> invitedUsers,
+  Map<String, String> failedUsers) {
 }

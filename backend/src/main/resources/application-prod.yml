@@ -20,22 +20,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
-  mail:
-    host: ${BACKEND_SMTP_HOST}
-    port: ${BACKEND_SMTP_PORT}
-    username: ${BACKEND_SMTP_USERNAME}
-    password: ${BACKEND_SMTP_PASSWORD}
-    protocol: smtp
-    properties:
-      mail:
-        smtp:
-          socketFactory:
-            port: ${BACKEND_SMTP_PORT}
-            class: javax.net.ssl.SSLSocketFactory
-          ssl:
-            enable: true
-            trust: ${BACKEND_SMTP_HOST}
-          auth: true
 
 logging:
   level:

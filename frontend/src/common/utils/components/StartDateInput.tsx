@@ -6,7 +6,7 @@ interface StartDateInputProps {
 }
 
 export default function StartDateInput(props: StartDateInputProps) {
-  const localized=useLocalized();
+  const localized = useLocalized();
   return (
     <CustomDateTimeInput label={localized("inputs.start_date")} name={"startDate"}
                          defaultValue={props.defaultValue ?? new Date()}/>

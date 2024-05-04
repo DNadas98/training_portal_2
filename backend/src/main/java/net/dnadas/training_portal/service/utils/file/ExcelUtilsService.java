@@ -44,7 +44,7 @@ public class ExcelUtilsService {
       Object value = valueExtractors.get(i).apply(item);
       if (value != null) {
         switch (value) {
-          case Boolean b -> cell.setCellValue(b?1:0);
+          case Boolean b -> cell.setCellValue(b ? 1 : 0);
           case Integer integer -> cell.setCellValue(integer);
           case Long l -> cell.setCellValue(l);
           case Double v -> cell.setCellValue(v);

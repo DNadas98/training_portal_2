@@ -1,5 +1,7 @@
 import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
-import {QuestionnaireSubmissionResponseDto} from "../../../../dto/QuestionnaireSubmissionResponseDto.ts";
+import {
+  QuestionnaireSubmissionResponseDto
+} from "../../../../dto/QuestionnaireSubmissionResponseDto.ts";
 import QuestionnaireSubmissionCard from "./QuestionnaireSubmissionCard.tsx";
 import useLocalized from "../../../../../common/localization/hooks/useLocalized.tsx";
 
@@ -7,16 +9,15 @@ import useLocalized from "../../../../../common/localization/hooks/useLocalized.
 interface UserQuestionnaireSubmissionListProps {
   maxPoints: boolean,
   questionnaireSubmissions: QuestionnaireSubmissionResponseDto[],
-
-  onDeleteClick(id): void,
-
   onSelectClick: (id: number) => Promise<void>,
   selectedQuestionnaireSubmissionLoading: boolean
+
+  onDeleteClick(id): void,
 }
 
 export default function UserQuestionnaireSubmissionList(props: UserQuestionnaireSubmissionListProps) {
   const localized = useLocalized();
-  return(<>
+  return (<>
     {props.questionnaireSubmissions?.length > 0
       ? props.questionnaireSubmissions.map((submission) => {
         return <Card key={submission.id}>

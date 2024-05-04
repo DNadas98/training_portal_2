@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       }
 
       TokenPayloadDto payload = jwtService.verifyAccessToken(accessToken);
-      UserDetails user = userDetailsService.loadUserByUsername(payload.email());
+      UserDetails user = userDetailsService.loadUserByUsername(payload.username());
       UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(
           ((ApplicationUser) user).getId(), null, user.getAuthorities());

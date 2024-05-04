@@ -13,6 +13,6 @@ export default function AccountMenu() {
   ]
 
   return <MenuSmall items={menuItems}
-                    title={(authentication.getFullName() as string)}
+                    title={(authentication.getUsername() as string)}
                     icon={<AccountBoxRounded/>}/>
 }

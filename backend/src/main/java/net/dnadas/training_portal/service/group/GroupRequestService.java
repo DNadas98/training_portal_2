@@ -88,7 +88,7 @@ public class GroupRequestService {
     request.setStatus(updateDto.status());
     request.setUpdatedAt(Instant.now());
     if (request.getStatus().equals(RequestStatus.APPROVED)) {
-      groupAdminService.addMember(groupId, request.getApplicationUser().getActualUsername());
+      groupAdminService.addMember(groupId, request.getApplicationUser().getUsername());
       requestDao.delete(request);
     } else {
       requestDao.save(request);

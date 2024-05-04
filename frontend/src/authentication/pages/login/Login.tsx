@@ -40,9 +40,9 @@ export default function Login() {
       event.preventDefault();
       setLoading(true);
       const formData = new FormData(event.currentTarget);
-      const email = formData.get('email') as string;
+      const username = formData.get('username') as string;
       const password = formData.get('password') as string;
-      const loginRequestDto: LoginRequestDto = {email, password};
+      const loginRequestDto: LoginRequestDto = {username, password};
       const response = await loginUser(loginRequestDto);
 
       if (response.error || response?.status > 399 || !response.data) {

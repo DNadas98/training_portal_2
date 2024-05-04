@@ -103,7 +103,7 @@ export default function Groups() {
   const [actionButtonDisabled, setActionButtonDisabled] = useState(false);
 
   async function sendGroupJoinRequest(groupId: number) {
-    const defaultError=localized("pages.groups.browser.error.send_join_request_default");
+    const defaultError = localized("pages.groups.browser.error.send_join_request_default");
     try {
       setActionButtonDisabled(true)
       const response = await authJsonFetch({
