@@ -52,7 +52,7 @@ import java.util.function.Function;
 public class PreRegistrationService {
   private static final Integer RECEIVED_CSV_MAX_SIZE = 400000;
   private static final String RECEIVED_CSV_CONTENT_TYPE = "text/csv";
-  private static final String CSV_DELIMITER = ",";
+  private static final String CSV_DELIMITER = ";";
   private static final List<String> PREREGISTER_REQUEST_CSV_HEADERS = List.of("Username",
     "Group Permissions: available: " + PermissionType.GROUP_ADMIN.name() + " " +
       PermissionType.GROUP_EDITOR.name() + " and " + PermissionType.GROUP_MEMBER.name() +
