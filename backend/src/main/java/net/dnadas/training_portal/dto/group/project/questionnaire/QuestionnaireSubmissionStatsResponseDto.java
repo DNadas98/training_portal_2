@@ -10,6 +10,8 @@ package net.dnadas.training_portal.dto.group.project.questionnaire;
  * @param maxPointSubmissionReceivedPoints NULLABLE
  * @param userId
  * @param username
+ * @param coordinatorUsername              NULLABLE
+ * @param dataPreparatorUsername           NULLABLE
  * @param hasExternalTestQuestionnaire
  * @param hasExternalTestFailure
  * @param submissionCount
@@ -19,6 +21,8 @@ public record QuestionnaireSubmissionStatsResponseDto(
   String maxPointSubmissionCreatedAt,
   Integer maxPointSubmissionReceivedPoints,
   Long userId, String username,
+  String coordinatorUsername,
+  String dataPreparatorUsername,
   Boolean hasExternalTestQuestionnaire,
   Boolean hasExternalTestFailure,
   Long submissionCount) {

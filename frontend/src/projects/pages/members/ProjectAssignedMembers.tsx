@@ -368,9 +368,6 @@ export default function ProjectAssignedMembers() {
                               ? " - Group Editor"
                               : ""}
                           </TableCell>
-                          <TableCell component="th" scope="row">
-                            {user.username}
-                          </TableCell>
                           <TableCell align="right" component="th" scope="row">
                             <Tooltip title={isGroupAdminOrEditor(user.permissions)
                               ? "Group editors or admins can not be removed from assigned members"
