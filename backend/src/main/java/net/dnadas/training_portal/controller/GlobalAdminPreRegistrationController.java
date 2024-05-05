@@ -48,6 +48,7 @@ public class GlobalAdminPreRegistrationController {
     response.setHeader(
       "Content-Disposition",
       "attachment; filename=\"preregistration.xlsx\"");
+    response.setCharacterEncoding("UTF-8");
     try {
       preRegistrationService.preRegisterUsers(
         groupId, projectId, questionnaireId, file, expiresAt, response, locale, zoneId);

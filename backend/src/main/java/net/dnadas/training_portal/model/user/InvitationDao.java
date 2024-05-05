@@ -18,4 +18,6 @@ public interface InvitationDao extends JpaRepository<Invitation, Long> {
   @Modifying
   @Query("DELETE FROM Invitation i WHERE i.expiresAt < :now")
   Integer deleteExpiredInvitations(Instant now);
+
+  Optional<Invitation> findByInvitationCode(UUID invitationCodeUuid);
 }

@@ -1,6 +1,7 @@
 package net.dnadas.training_portal.service.utils.file;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.dnadas.training_portal.exception.utils.file.InvalidFileException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CsvUtilsService {
 
   /**
@@ -63,9 +65,6 @@ public class CsvUtilsService {
   public List<List<String>> parseCsv(
     MultipartFile csvFile, String delimiter, List<String> headers) {
     List<List<String>> records = getRecords(csvFile, delimiter);
-    if (!records.isEmpty() && !records.get(0).equals(headers)) {
-      throw new InvalidFileException("CSV does not contain the correct headers.");
-    }
     validateRecords(records, headers.size());
     return records.subList(1, records.size());  // Skip headers
   }

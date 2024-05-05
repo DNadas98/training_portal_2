@@ -103,8 +103,7 @@ public class PreRegistrationService {
   @PreAuthorize("hasPermission(#groupId, 'UserGroup', 'GROUP_ADMIN')")
   public void preRegisterUsers(
     Long groupId, Long projectId, Long questionnaireId, MultipartFile usersCsv, String expiration,
-    HttpServletResponse response, Locale locale, ZoneId zoneId)
-    throws IOException {
+    HttpServletResponse response, Locale locale, ZoneId zoneId) throws IOException {
     Instant expirationDate = dateTimeService.toStoredDate(expiration);
     if (expirationDate.isBefore(Instant.now())) {
       throw new PastDateExpirationDateException();
@@ -137,7 +136,7 @@ public class PreRegistrationService {
       throw new UserAlreadyExistsException();
     }
     Invitation invitation = invitationDao.findByInvitationCodeAndUsername(
-      invitationCode, dto.username()).orElseThrow(InvalidCredentialsException::new);
+      invitationCode, dto.username().trim()).orElseThrow(InvalidCredentialsException::new);
     if (invitation.getExpiresAt().isBefore(Instant.now())) {
       invitationDao.delete(invitation);
       throw new InvitationExpiredException();
@@ -400,5 +399,14 @@ public class PreRegistrationService {
       user.setHasExternalTestFailure(hasExternalTestFailure);
     }
     applicationUserDao.save(user);
+  }
+
+  public void checkPreRegistration(UUID invitationCodeUuid) {
+    Invitation invitation = invitationDao.findByInvitationCode(invitationCodeUuid)
+      .orElseThrow(InvalidCredentialsException::new);
+    if (invitation.getExpiresAt().isBefore(Instant.now())) {
+      invitationDao.delete(invitation);
+      throw new InvitationExpiredException();
+    }
   }
 }

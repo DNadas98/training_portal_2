@@ -35,6 +35,18 @@ public class AuthenticationController {
 //    return loginExistingUser(response, dto.username(), dto.password(), HttpStatus.CREATED);
 //  }
 
+  @GetMapping("/preregistration-check")
+  public ResponseEntity<?> checkPreRegistration(@RequestParam String code) {
+    final UUID invitationCodeUuid;
+    try {
+      invitationCodeUuid = UUID.fromString(code);
+    } catch (IllegalArgumentException e) {
+      throw new InvalidCredentialsException();
+    }
+    preRegistrationService.checkPreRegistration(invitationCodeUuid);
+    return ResponseEntity.ok().build();
+  }
+
   @PostMapping("/preregistration-complete")
   public ResponseEntity<?> completePreRegistration(
     @RequestBody @Valid PreRegisterCompleteRequestDto dto, HttpServletResponse response,
@@ -46,7 +58,7 @@ public class AuthenticationController {
       throw new InvalidCredentialsException();
     }
     preRegistrationService.completePreRegistration(dto, invitationCodeUuid);
-    return loginExistingUser(response, dto.username(), dto.password(), HttpStatus.CREATED);
+    return loginExistingUser(response, dto.username().trim(), dto.password(), HttpStatus.CREATED);
 
   }
 

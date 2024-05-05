@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import LoadingSpinner from "../../../common/utils/components/LoadingSpinner.tsx";
 import {ApiResponseDto} from "../../../common/api/dto/ApiResponseDto.ts";
-import DialogAlert from "../../../common/utils/components/DialogAlert.tsx";
 import {Box, Button, Dialog, DialogContent, Stack, Typography} from "@mui/material";
 import usePublicJsonFetch from "../../../common/api/hooks/usePublicJsonFetch.tsx";
 import {AuthenticationDto} from "../../dto/AuthenticationDto.ts";
@@ -35,9 +34,24 @@ export default function PreRegistrationComplete() {
   const invitationCode = new URLSearchParams(window.location.search).get("code") ?? "";
 
   const handleProcessError = (error: string | undefined = undefined) => {
-    const message = error ?? "";
+    const message = error ?? localized("common.error.redirect.unknown");
     setProcessError(message);
   };
+
+  const checkVerification = async () => {
+    try {
+      setLoading(true);
+      const response: ApiResponseDto = await publicJsonFetch({
+        path: `auth/preregistration-check?code=${invitationCode}`, method: "GET"
+      });
+      if (response.error || response?.status > 399) {
+        return handleProcessError(response?.error ?? undefined);
+      }
+    } catch (e) {
+      handleProcessError();
+      setLoading(false);
+    }
+  }
 
   const handleVerification = async (event: any) => {
     try {
@@ -86,50 +100,53 @@ export default function PreRegistrationComplete() {
   }
 
   useEffect(() => {
-    setLoading(true);
     if (!invitationCode?.length) {
-      handleProcessError(localized("common.error.redirect.code_invalid"))
+      handleProcessError(localized("common.error.redirect.code_invalid"));
+      setLoading(false);
+    } else {
+      checkVerification().then();
     }
-    setLoading(false);
   }, [invitationCode]);
+
+  if (processError) {
+    notification.openNotification({
+      type: "error", vertical: "top", horizontal: "center", message: processError
+    });
+    navigate("/login");
+    return <></>;
+  }
 
   return (
     loading
       ? <LoadingSpinner/>
-      : processError
-        ? <DialogAlert title={`${processError}`} text={
-          localized("common.error.redirect.unknown")
-        } buttonText={"Home"} onClose={() => {
-          navigate("/", {replace: true});
-        }}/>
-        : isLoggedIn
-          ? <SuccessfulLoginRedirect groupId={activeGroupId} projectId={activeProjectId}
-                                     questionnaireId={activeQuestionnaireId}/>
-          : <Dialog open={true} maxWidth={"lg"} fullScreen={isSmallScreen}>
-            <DialogContent><Stack spacing={1}>
-              <Stack spacing={1} direction={"row"} flexWrap={"wrap"} mb={2} alignItems={"flex-start"}
-                     justifyContent={"space-between"}>
-                <Typography variant={"h6"}>{localized("pages.pre_registration.title")}</Typography>
-                <LocaleMenu/>
-              </Stack>
-              <HomeList/>
-              <Stack spacing={0.5} sx={{pl: 2, pr: 2}}>
-                {localized("pages.pre_registration.info").split("\n").map((row, i) => <Typography
-                  key={i}>
-                  {row}
-                </Typography>)}
-              </Stack>
-              <SiteInformation/>
-              <Box sx={{pl: 2, pr: 2}} component={"form"} onSubmit={handleVerification}><Stack
-                spacing={2}>
-                <Typography>{localized("inputs.password_invalid")}</Typography>
-                <LegalPolicyCheckbox/>
-                <UsernameInput/>
-                <PasswordInput/>
-                <PasswordInput confirm={true}/>
-                <Button type={"submit"}>{localized("pages.pre_registration.submit_button")}</Button>
-              </Stack></Box>
-            </Stack></DialogContent>
-          </Dialog>
+      : isLoggedIn
+        ? <SuccessfulLoginRedirect groupId={activeGroupId} projectId={activeProjectId}
+                                   questionnaireId={activeQuestionnaireId}/>
+        : <Dialog open={true} maxWidth={"lg"} fullScreen={isSmallScreen}>
+          <DialogContent><Stack spacing={1}>
+            <Stack spacing={1} direction={"row"} flexWrap={"wrap"} mb={2} alignItems={"flex-start"}
+                   justifyContent={"space-between"}>
+              <Typography variant={"h6"}>{localized("pages.pre_registration.title")}</Typography>
+              <LocaleMenu/>
+            </Stack>
+            <HomeList/>
+            <Stack spacing={0.5} sx={{pl: 2, pr: 2}}>
+              {localized("pages.pre_registration.info").split("\n").map((row, i) => <Typography
+                key={i}>
+                {row}
+              </Typography>)}
+            </Stack>
+            <SiteInformation/>
+            <Box sx={{pl: 2, pr: 2}} component={"form"} onSubmit={handleVerification}><Stack
+              spacing={2}>
+              <Typography>{localized("inputs.password_invalid")}</Typography>
+              <LegalPolicyCheckbox/>
+              <UsernameInput/>
+              <PasswordInput/>
+              <PasswordInput confirm={true}/>
+              <Button type={"submit"}>{localized("pages.pre_registration.submit_button")}</Button>
+            </Stack></Box>
+          </Stack></DialogContent>
+        </Dialog>
   );
 }

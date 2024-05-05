@@ -61,6 +61,7 @@ public class CoordinatorQuestionnaireSubmissionController {
       response.setHeader(
         "Content-Disposition",
         "attachment; filename=\"questionnaire-statistics.xlsx\"");
+      response.setCharacterEncoding("UTF-8");
       questionnaireStatisticsService.exportAllQuestionnaireSubmissionsToExcel(
         groupId, projectId, questionnaireId, status, search != null ? search : "", zoneId,
         response, locale);
