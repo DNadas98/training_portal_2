@@ -31,13 +31,13 @@ const Home = () => {
                   {localized("menus.sign_in")}
                 </Button>
               </Grid>
-              <Grid item>
+              {/*<Grid item>
                 <Button component={RouterLink}
                         to={"/register"}
                         variant={"contained"}>
                   {localized("menus.sign_up")}
                 </Button>
-              </Grid>
+              </Grid>*/}
             </Grid>
           </CardActions> : <></>}
       </CardContent>

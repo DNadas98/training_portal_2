@@ -25,7 +25,7 @@ import QuestionnaireEditor
   from "../../questionnaires/pages/editor/createUpdate/QuestionnaireEditor.tsx";
 import Home from "../../public/pages/home/Home.tsx";
 import Login from "../../authentication/pages/login/Login.tsx";
-import Register from "../../authentication/pages/register/Register.tsx";
+//import Register from "../../authentication/pages/register/Register.tsx";
 import Profile from "../../user/pages/profile/Profile.tsx";
 import UserJoinRequests from "../../user/pages/requests/UserJoinRequests.tsx";
 import Logout from "../../authentication/pages/Logout.tsx";
@@ -56,7 +56,7 @@ const appRouter = createBrowserRouter([
     children: [
       {path: "", element: <Home/>},
       {path: "login", element: <Login/>},
-      {path: "register", element: <Register/>},
+      /*{path: "register", element: <Register/>},*/
       {path: "/*", element: <NotFound/>}
     ]
   },

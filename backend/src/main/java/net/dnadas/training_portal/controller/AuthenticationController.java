@@ -28,12 +28,12 @@ public class AuthenticationController {
   private final CookieService cookieService;
   private final MessageSource messageSource;
 
-  @PostMapping("/register")
-  public ResponseEntity<?> register(
-    @RequestBody @Valid RegisterRequestDto dto, HttpServletResponse response) {
-    authenticationService.register(dto);
-    return loginExistingUser(response, dto.username(), dto.password(), HttpStatus.CREATED);
-  }
+//  @PostMapping("/register")
+//  public ResponseEntity<?> register(
+//    @RequestBody @Valid RegisterRequestDto dto, HttpServletResponse response) {
+//    authenticationService.register(dto);
+//    return loginExistingUser(response, dto.username(), dto.password(), HttpStatus.CREATED);
+//  }
 
   @PostMapping("/preregistration-complete")
   public ResponseEntity<?> completePreRegistration(

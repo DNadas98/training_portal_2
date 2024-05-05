@@ -58,12 +58,12 @@ export default function LoginCard({onSubmit}: LoginCardProps) {
                   <Divider sx={{
                     marginBottom: 2
                   }}/>
-                  <Button variant={"text"}
+                  {/*<Button variant={"text"}
                           component={RouterLink}
                           to={"/register"}
                           sx={{textTransform: "none"}}>
                     {getLocalized("pages.sign_in.sign_up_button")}
-                  </Button>
+                  </Button>*/}
                 </Stack>
               </Grid>
             </Grid>

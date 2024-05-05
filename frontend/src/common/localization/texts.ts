@@ -9,7 +9,7 @@ export const texts = {
     "menus": {
       "home": "Home",
       "sign_in": "Sign In",
-      "sign_up": "Sign Up",
+      /*"sign_up": "Sign Up",*/
       "sign_out": "Sign Out",
       "language": {
         "title": "Language",
@@ -38,12 +38,12 @@ export const texts = {
         "title": "Sign In",
         "submit_button": "Sign In",
         "forgot_password_button": "Forgot your password? Click Here!",
-        "sign_up_button": "Don't have an account? Sign Up!",
+        /*"sign_up_button": "Don't have an account? Sign Up!",*/
         "error": {
           "default": "An error has occurred during the sign in process"
         }
       },
-      "sign_up": {
+      /*"sign_up": {
         "title": "Sign Up",
         "info": "The password must contain at least one uppercase character, one lowercase character and one digit.",
         "submit_button": "Sign Up",
@@ -51,7 +51,7 @@ export const texts = {
         "error": {
           "default": "An error has occurred during the sign up process"
         }
-      },
+      },*/
       "pre_registration": {
         "title": "Complete Your Registration",
         "submit_button": "Submit",
@@ -258,7 +258,7 @@ export const texts = {
     "menus": {
       "home": "Főoldal",
       "sign_in": "Bejelentkezés",
-      "sign_up": "Regisztráció",
+      /*"sign_up": "Regisztráció",*/
       "sign_out": "Kijelentkezés",
       "language": {
         "title": "Nyelv",
@@ -279,7 +279,7 @@ export const texts = {
     },
     "pages": {
       "home": {
-        "p01": "Regisztráljon oldalunkon, és jelentkezzen be!",
+        "p01": "Jelentkezzen be!",
         "p02": "Csatlakozzon témacsoportokhoz, illetve projektekhez!",
         "p03": "Tanulmányozza át az oktatási anyagokat, majd töltse ki a felkészültségét mérő teszteket!"
       },
@@ -287,12 +287,12 @@ export const texts = {
         "title": "Bejelentkezés",
         "submit_button": "Bejelentkezés",
         "forgot_password_button": "Elfelejtette a jelszavát? Kattintson ide!",
-        "sign_up_button": "Nincs még felhasználói fiókja? Regisztráljon!",
+        /*"sign_up_button": "Nincs még felhasználói fiókja? Regisztráljon!",*/
         "error": {
           "default": "A bejelentkezés során hiba történt."
         }
       },
-      "sign_up": {
+      /*"sign_up": {
         "title": "Regisztráció",
         "info": "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számjegyet.",
         "submit_button": "Regisztráció",
@@ -300,7 +300,7 @@ export const texts = {
         "error": {
           "default": "A regisztráció során hiba történt."
         }
-      },
+      },*/
       "password_reset": {
         "title": "Jelszó-visszaállítási kérelem",
         "submit_button": "Beküldés",

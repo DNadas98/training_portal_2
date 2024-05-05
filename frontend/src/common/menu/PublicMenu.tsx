@@ -11,8 +11,8 @@ export default function PublicMenu(props: IMenuComponentProps) {
   const isSmallScreen = IsSmallScreen();
   const menuItems: IMenuItem[] = [
     {path: "/", title: localized("menus.home")},
-    {path: "/login", title: localized("menus.sign_in")},
-    {path: "/register", title: localized("menus.sign_up")}
+    {path: "/login", title: localized("menus.sign_in")}/*,
+    {path: "/register", title: localized("menus.sign_up")}*/
   ];
 
   if (props?.menuStyle === "small") {
