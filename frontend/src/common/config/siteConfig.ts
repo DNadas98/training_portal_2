@@ -22,9 +22,9 @@ interface developerInfo {
 }
 
 const siteConfig: ISiteConfig = {
-  siteName: "tesztsor.hu",
-  siteURL: "https://tesztsor.hu",
-  sourceCodeUrl: "https://github.com/DNadas98/training-portal",
+  siteName: "vizsgasor.hu",
+  siteURL: "https://vizsgasor.hu",
+  sourceCodeUrl: "https://github.com/DNadas98/training_portal_2",
   defaultLocale: "huHU",
   adminInfo: {
     name_en: "Ferenc Nádas",

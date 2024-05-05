@@ -55,7 +55,7 @@ export const texts = {
       "pre_registration": {
         "title": "Complete Your Registration",
         "submit_button": "Submit",
-        "info": "You have been invited by your mentors to join tesztsor.hu.\nIn this application, you can find educational materials, and fill out tests, that provide feedback about your learning progress.\nYour identifier in this case is a pre-registered identifier, created to align with the requirements of your group.\nTo complete your registration, log in and use the application in the future, enter a password.\nYour identifier and password will be your sig-in credentials.",
+        "info": "You have been invited by your mentors to join vizsgasor.hu.\nIn this application, you can find educational materials, and fill out tests, that provide feedback about your learning progress.\nYour identifier in this case is a pre-registered identifier, created to align with the requirements of your group.\nTo complete your registration, log in and use the application in the future, enter a password.\nYour identifier and password will be your sig-in credentials.",
         "error": {
           "default": "An error has occurred during the registration process"
         }
@@ -309,8 +309,8 @@ export const texts = {
         }
       },
       "pre_registration": {
-        "title": "Üdvözöljük a tesztsor.hu oldalán!",
-        "info": "Önt szervezője meghívta a tesztsor.hu felhasználói közé.\nEzen a felületen oktatási anyagokat talál, valamint a felkészültségét mérő tesztsort tölthet ki.\nAzonosítója előre be lett állítva.\nA belépéshez, illetve a későbbi használathoz, létre kell hoznia egy jelszót.\nA későbbiekben az azonosítójával, illetve a most beállított jelszavával fog tudni belépni.",
+        "title": "Üdvözöljük a vizsgasor.hu oldalán!",
+        "info": "Önt szervezője meghívta a vizsgasor.hu felhasználói közé.\nEzen a felületen oktatási anyagokat talál, valamint a felkészültségét mérő tesztsort tölthet ki.\nAzonosítója előre be lett állítva.\nA belépéshez, illetve a későbbi használathoz, létre kell hoznia egy jelszót.\nA későbbiekben az azonosítójával, illetve a most beállított jelszavával fog tudni belépni.",
         "submit_button": "Beküldés",
         "error": {
           "default": "A regisztráció véglegesítése során hiba történt"
