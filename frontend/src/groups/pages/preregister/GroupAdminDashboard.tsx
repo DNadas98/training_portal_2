@@ -179,9 +179,11 @@ export default function GroupAdminDashboard() {
         body: formData
       });
       if (!response || response.status > 399) {
+        if (response.error){
+          return openErrorNotification(response.error);
+        }
         const json = await response.json();
-        openErrorNotification(json?.error ?? defaultError);
-        return;
+        return  openErrorNotification(json?.error ?? defaultError);
       }
       const blob = await response?.blob();
       const link = document.createElement("a");

@@ -40,7 +40,7 @@ export default function useAuthFetch() {
       if (httpResponse.status > 399) {
         let responseObject;
         try {
-          responseObject = await httpResponse?.json();
+          responseObject = await httpResponse.clone().json();
         } catch (e) {
           return httpResponse;
         }
