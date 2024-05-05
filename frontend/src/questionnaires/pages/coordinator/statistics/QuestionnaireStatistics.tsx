@@ -329,7 +329,6 @@ export default function QuestionnaireStatistics() {
                 <TableCell>{localized("statistics.datapreparator")}</TableCell>
                 <TableCell>{localized("statistics.external_questionnaire")}</TableCell>
                 <TableCell>{localized("statistics.external_failure")}</TableCell>
-                <TableCell>{localized("statistics.completion_email")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -361,8 +360,6 @@ export default function QuestionnaireStatistics() {
                       <TableCell>{stat.hasExternalTestQuestionnaire ? <Check/> :
                         <Close/>}</TableCell>
                       <TableCell>{stat.hasExternalTestFailure ? <Check/> : <Close/>}</TableCell>
-                      <TableCell>{stat.receivedSuccessfulCompletionEmail ? <Check/> :
-                        <Close/>}</TableCell>
                     </TableRow>
                   ))
                   : <TableRow>

@@ -4,15 +4,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.dnadas.training_portal.dto.user.PreRegisterUsersReportDto;
 import net.dnadas.training_portal.service.user.PreRegistrationService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
+import java.time.ZoneId;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1/groups/{groupId}/pre-register")
@@ -40,14 +38,26 @@ public class GroupAdminPreRegistrationController {
   }
 
   @PostMapping("/users")
-  public ResponseEntity<?> preRegister(
+  public void preRegister(
     @PathVariable @Min(1) Long groupId,
     @RequestParam("file") MultipartFile file,
     @RequestParam("projectId") Long projectId,
     @RequestParam("questionnaireId") Long questionnaireId,
-    @RequestParam("expiresAt") String expiresAt) {
-    PreRegisterUsersReportDto reportDto = preRegistrationService.preRegisterUsers(
-      groupId, projectId, questionnaireId, file, expiresAt);
-    return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("data", reportDto));
+    @RequestParam("expiresAt") String expiresAt,
+    @RequestParam String timeZone,
+    HttpServletResponse response, Locale locale) {
+    ZoneId zoneId = ZoneId.of(timeZone);
+    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    response.setHeader(
+      "Content-Disposition",
+      "attachment; filename=\"preregistration.xlsx\"");
+    try {
+      preRegistrationService.preRegisterUsers(
+        groupId, projectId, questionnaireId, file, expiresAt, response, locale, zoneId);
+      response.flushBuffer();
+    } catch (IOException e) {
+      log.error("Failed to write Excel to response - " + e.getMessage());
+      throw new RuntimeException("Failed to write Excel to response - " + e.getMessage());
+    }
   }
 }

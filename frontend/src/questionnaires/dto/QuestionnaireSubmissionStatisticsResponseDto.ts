@@ -10,6 +10,5 @@ export interface QuestionnaireSubmissionStatisticsResponseDto {
   dataPreparatorUsername: string;
   hasExternalTestQuestionnaire: boolean;
   hasExternalTestFailure: boolean;
-  receivedSuccessfulCompletionEmail: boolean;
   submissionCount: number;
 }

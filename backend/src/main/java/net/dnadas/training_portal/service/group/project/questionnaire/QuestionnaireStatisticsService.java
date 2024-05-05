@@ -90,7 +90,9 @@ public class QuestionnaireStatisticsService {
   public void exportAllQuestionnaireSubmissionsToExcel(
     Long groupId, Long projectId, Long questionnaireId, QuestionnaireStatus status, String search,
     ZoneId timeZoneId, HttpServletResponse response, Locale locale) throws IOException {
-    try (SXSSFWorkbook workbook = excelUtilsService.createWorkbook(); OutputStream outputStream = response.getOutputStream(); Stream<QuestionnaireSubmissionStatsInternalDto> dtos = getQuestionnaireStatisticsOutputStream(
+    try (SXSSFWorkbook workbook = excelUtilsService.createWorkbook();
+         OutputStream outputStream = response.getOutputStream();
+         Stream<QuestionnaireSubmissionStatsInternalDto> dtos = getQuestionnaireStatisticsOutputStream(
       groupId, projectId, questionnaireId, status, search)) {
       Sheet sheet = excelUtilsService.createSheet(workbook, "Statistics");
       CellStyle dateCellStyle = excelUtilsService.createDateCellStyle(workbook);

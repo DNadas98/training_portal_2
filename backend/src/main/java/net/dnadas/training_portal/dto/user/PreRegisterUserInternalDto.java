@@ -12,6 +12,16 @@ import java.util.Set;
 @RequiredArgsConstructor
 @ToString
 @EqualsAndHashCode
+/**
+ * Represents a pre-registered user.
+ @param username the username of the user
+ @param groupPermissions the permissions of the user
+ @param projectPermissions the permissions of the user
+ @param coordinatorName the name of the coordinator - nullable
+ @param dataPreparatorName the name of the data preparator - nullable
+ @param hasExternalTestQuestionnaire whether the user has an external test questionnaire - nullable
+ @param hasExternalTestFailure whether the user has an external test failure - nullable
+ */
 public final class PreRegisterUserInternalDto {
   private final @NotNull @Length(min = 1, max = 50) String username;
   private final @NotNull Set<PermissionType> groupPermissions;

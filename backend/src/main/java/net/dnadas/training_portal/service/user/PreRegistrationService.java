@@ -1,10 +1,10 @@
 package net.dnadas.training_portal.service.user;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dnadas.training_portal.dto.auth.PreRegisterCompleteRequestDto;
 import net.dnadas.training_portal.dto.user.PreRegisterUserInternalDto;
-import net.dnadas.training_portal.dto.user.PreRegisterUsersReportDto;
 import net.dnadas.training_portal.exception.auth.InvalidCredentialsException;
 import net.dnadas.training_portal.exception.auth.UserAlreadyExistsException;
 import net.dnadas.training_portal.exception.group.GroupNotFoundException;
@@ -26,6 +26,11 @@ import net.dnadas.training_portal.model.user.Invitation;
 import net.dnadas.training_portal.model.user.InvitationDao;
 import net.dnadas.training_portal.service.utils.datetime.DateTimeService;
 import net.dnadas.training_portal.service.utils.file.CsvUtilsService;
+import net.dnadas.training_portal.service.utils.file.ExcelUtilsService;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,7 +40,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +53,7 @@ public class PreRegistrationService {
   private static final Integer RECEIVED_CSV_MAX_SIZE = 400000;
   private static final String RECEIVED_CSV_CONTENT_TYPE = "text/csv";
   private static final String CSV_DELIMITER = ",";
-  private static final List<String> CSV_HEADERS = List.of("Username",
+  private static final List<String> PREREGISTER_REQUEST_CSV_HEADERS = List.of("Username",
     "Group Permissions: available: " + PermissionType.GROUP_ADMIN.name() + " " +
       PermissionType.GROUP_EDITOR.name() + " and " + PermissionType.GROUP_MEMBER.name() +
       " default: " + PermissionType.GROUP_MEMBER.name(),
@@ -55,6 +64,17 @@ public class PreRegistrationService {
     "Current Data Preparator Username or NULL",
     "Has External Test Questionnaire: TRUE FALSE or NULL",
     "Has External Test Failure: TRUE FALSE or NULL");
+  private static final List<String> PREREGISTER_REPORT_INVITED_CSV_HEADERS = List.of(
+    "Username", "Group Permissions", "Project Permissions", "Coordinator Name",
+    "Data Preparator Name", "Has External Test Questionnaire", "Has External Test Failure",
+    "Invitation Code", "Expiration Date");
+  private static final List<String> PREREGISTER_REPORT_UPDATED_CSV_HEADERS = List.of(
+    "Username", "Group Permissions", "Project Permissions", "Coordinator Name",
+    "Data Preparator Name", "Has External Test Questionnaire", "Has External Test Failure");
+  private static final List<String> PREREGISTER_REPORT_FAILED_CSV_HEADERS = List.of(
+    "Username", "Error Message");
+  private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
+    "yyyy-MM-dd HH:mm:ss");
   private static final long MAX_EXPIRATION_DATE_SECONDS = 31536000; // 1 year
   private final ApplicationUserDao applicationUserDao;
   private final PasswordEncoder passwordEncoder;
@@ -64,6 +84,8 @@ public class PreRegistrationService {
   private final QuestionnaireDao questionnaireDao;
   private final CsvUtilsService csvUtilsService;
   private final DateTimeService dateTimeService;
+  private final ExcelUtilsService excelUtilsService;
+  private final MessageSource messageSource;
 
   public void getPreRegisterUsersCsvTemplate(OutputStream outputStream) throws IOException {
     List<List<String>> exampleData = List.of(
@@ -73,13 +95,16 @@ public class PreRegistrationService {
         "NULL", "NULL", "NULL"),
       List.of("exampleUser3", "GROUP_MEMBER", "PROJECT_ASSIGNED_MEMBER", "Example Coordinator",
         "Example Data Preparator", "TRUE", "FALSE"));
-    csvUtilsService.writeCsvToStream(exampleData, CSV_DELIMITER, CSV_HEADERS, outputStream);
+    csvUtilsService.writeCsvToStream(
+      exampleData, CSV_DELIMITER, PREREGISTER_REQUEST_CSV_HEADERS, outputStream);
   }
 
   @Transactional(rollbackFor = Error.class)
   @PreAuthorize("hasPermission(#groupId, 'UserGroup', 'GROUP_ADMIN')")
-  public PreRegisterUsersReportDto preRegisterUsers(
-    Long groupId, Long projectId, Long questionnaireId, MultipartFile usersCsv, String expiration) {
+  public void preRegisterUsers(
+    Long groupId, Long projectId, Long questionnaireId, MultipartFile usersCsv, String expiration,
+    HttpServletResponse response, Locale locale, ZoneId zoneId)
+    throws IOException {
     Instant expirationDate = dateTimeService.toStoredDate(expiration);
     if (expirationDate.isBefore(Instant.now())) {
       throw new PastDateExpirationDateException();
@@ -101,7 +126,8 @@ public class PreRegistrationService {
       throw new ProjectNotFoundException(projectId);
     }
 
-    return processPreRegistrationRequest(usersCsv, group, project, questionnaire, expirationDate);
+    processPreRegistrationRequest(
+      usersCsv, group, project, questionnaire, expirationDate, response, locale, zoneId);
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -131,42 +157,92 @@ public class PreRegistrationService {
     invitationDao.delete(invitation);
   }
 
-  private PreRegisterUsersReportDto processPreRegistrationRequest(
+  private void processPreRegistrationRequest(
     MultipartFile usersCsv, UserGroup group, Project project, Questionnaire questionnaire,
-    Instant expirationDate) {
-    Map<String, PreRegisterUserInternalDto> updatedUsers = new HashMap<>();
-    Map<String, PreRegisterUserInternalDto> invitedUsers = new HashMap<>();
-    Map<String, String> failedUsers = new HashMap<>();
+    Instant expirationDate, HttpServletResponse response, Locale locale, ZoneId zoneId)
+    throws IOException {
     List<PreRegisterUserInternalDto> userRequests = parsePreRegistrationCsv(usersCsv);
 
-    for (PreRegisterUserInternalDto userRequest : userRequests) {
-      try {
-        Optional<ApplicationUser> existingUser = applicationUserDao.findByUsername(
-          userRequest.getUsername());
+    try (SXSSFWorkbook workbook = excelUtilsService.createWorkbook();
+         OutputStream outputStream = response.getOutputStream()) {
+      Sheet invitedSheet = excelUtilsService.createSheet(workbook, messageSource.getMessage(
+        "preRegisterUsers.invitedSheetName", null, locale));
+      excelUtilsService.createHeaderRow(invitedSheet, PREREGISTER_REPORT_INVITED_CSV_HEADERS);
+      AtomicInteger invitedRowIndex = new AtomicInteger(1);
 
-        if (existingUser.isPresent()) {
-          updateExistingUser(group, project, questionnaire, existingUser.get(), userRequest);
-          updatedUsers.put(userRequest.getUsername(), userRequest);
-        } else {
-          UUID invitationCode = handlePreRegistrationRequest(
-            group, project, questionnaire, userRequest, expirationDate);
-          userRequest.setInvitationCode(invitationCode.toString());
-          invitedUsers.put(userRequest.getUsername(), userRequest);
+      Sheet updatedSheet = excelUtilsService.createSheet(workbook, messageSource.getMessage(
+        "preRegisterUsers.updatedSheetName", null, locale));
+      excelUtilsService.createHeaderRow(updatedSheet, PREREGISTER_REPORT_UPDATED_CSV_HEADERS);
+      AtomicInteger updatedRowIndex = new AtomicInteger(1);
+
+      Sheet failedSheet = excelUtilsService.createSheet(workbook, messageSource.getMessage(
+        "preRegisterUsers.failedSheetName", null, locale));
+      excelUtilsService.createHeaderRow(failedSheet, PREREGISTER_REPORT_FAILED_CSV_HEADERS);
+      AtomicInteger failedRowIndex = new AtomicInteger(1);
+
+      CellStyle dateCellStyle = excelUtilsService.createDateCellStyle(workbook);
+
+      for (PreRegisterUserInternalDto userRequest : userRequests) {
+        try {
+          Optional<ApplicationUser> existingUser = applicationUserDao.findByUsername(
+            userRequest.getUsername());
+          if (existingUser.isPresent()) {
+            updateExistingUser(group, project, questionnaire, existingUser.get(), userRequest);
+            excelUtilsService.fillDataRow(updatedSheet.createRow(updatedRowIndex.getAndIncrement()),
+              userRequest, getUpdatedUsersValueExtractors(), dateCellStyle);
+          } else {
+            UUID invitationCode = handlePreRegistrationRequest(
+              group, project, questionnaire, userRequest, expirationDate);
+            userRequest.setInvitationCode(invitationCode.toString());
+            excelUtilsService.fillDataRow(invitedSheet.createRow(invitedRowIndex.getAndIncrement()),
+              userRequest, getInvitedUsersValueExtractors(expirationDate, zoneId), dateCellStyle);
+          }
+        } catch (Exception e) {
+          excelUtilsService.fillDataRow(failedSheet.createRow(failedRowIndex.getAndIncrement()),
+            userRequest, getFailedUsersValueExtractors(e.getMessage()), dateCellStyle);
         }
-      } catch (Exception e) {
-        failedUsers.put(userRequest.getUsername(), e.getMessage());
       }
+
+      workbook.write(outputStream);
     }
-    List<PreRegisterUserInternalDto> updatedUsersList = updatedUsers.values().stream().toList();
-    List<PreRegisterUserInternalDto> invitedUsersList = invitedUsers.values().stream().toList();
-    return new PreRegisterUsersReportDto(
-      updatedUsersList.size() + invitedUsersList.size() + failedUsers.size(), updatedUsersList,
-      invitedUsersList, failedUsers);
+  }
+
+  private List<Function<PreRegisterUserInternalDto, Object>> getInvitedUsersValueExtractors(
+    Instant expirationDate, ZoneId timeZoneId) {
+    return List.of(
+      PreRegisterUserInternalDto::getUsername,
+      PreRegisterUserInternalDto::getGroupPermissions,
+      PreRegisterUserInternalDto::getProjectPermissions,
+      PreRegisterUserInternalDto::getCoordinatorName,
+      PreRegisterUserInternalDto::getDataPreparatorName,
+      PreRegisterUserInternalDto::getHasExternalTestQuestionnaire,
+      PreRegisterUserInternalDto::getHasExternalTestFailure,
+      PreRegisterUserInternalDto::getInvitationCode,
+      dto -> dateTimeFormatter.format(expirationDate.atZone(timeZoneId)));
+  }
+
+  private List<Function<PreRegisterUserInternalDto, Object>> getUpdatedUsersValueExtractors() {
+    return List.of(
+      PreRegisterUserInternalDto::getUsername,
+      PreRegisterUserInternalDto::getGroupPermissions,
+      PreRegisterUserInternalDto::getProjectPermissions,
+      PreRegisterUserInternalDto::getCoordinatorName,
+      PreRegisterUserInternalDto::getDataPreparatorName,
+      PreRegisterUserInternalDto::getHasExternalTestQuestionnaire,
+      PreRegisterUserInternalDto::getHasExternalTestFailure);
+  }
+
+  private List<Function<PreRegisterUserInternalDto, Object>> getFailedUsersValueExtractors(
+    String errorMessage) {
+    return List.of(
+      PreRegisterUserInternalDto::getUsername,
+      dto -> errorMessage != null ? errorMessage : "An unknown error has occurred");
   }
 
   public List<PreRegisterUserInternalDto> parsePreRegistrationCsv(MultipartFile usersCsv) {
     csvUtilsService.verifyCsv(usersCsv, RECEIVED_CSV_CONTENT_TYPE, RECEIVED_CSV_MAX_SIZE);
-    List<List<String>> csvRecords = csvUtilsService.parseCsv(usersCsv, CSV_DELIMITER, CSV_HEADERS);
+    List<List<String>> csvRecords = csvUtilsService.parseCsv(usersCsv, CSV_DELIMITER,
+      PREREGISTER_REQUEST_CSV_HEADERS);
     return csvRecords.stream().map(record -> new PreRegisterUserInternalDto(record.get(0).trim(),
       parseGroupPermissions(record.get(1).trim()), parseProjectPermissions(record.get(2).trim()),
       parseNullable(record.get(3)), parseNullable(record.get(4)),

@@ -4,20 +4,17 @@ import {
   QuestionnaireResponseEditorDto
 } from "../../../questionnaires/dto/QuestionnaireResponseEditorDto.ts";
 import {useNotification} from "../../../common/notification/context/NotificationProvider.tsx";
-import {useDialog} from "../../../common/dialog/context/DialogProvider.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import useAuthJsonFetch from "../../../common/api/hooks/useAuthJsonFetch.tsx";
 import useAuthFetch from "../../../common/api/hooks/useAuthFetch.tsx";
 import {Grid} from "@mui/material";
 import {formatISO} from "date-fns";
-import {PreRegisterUsersReportDto} from "../../../admin/dto/PreRegisterUsersReportDto.ts";
-import UserPreRegistrationReport
-  from "../../../admin/pages/adminDashboard/components/UserPreRegistrationReport.tsx";
 import LoadingSpinner from "../../../common/utils/components/LoadingSpinner.tsx";
 import {isValidId} from "../../../common/utils/isValidId.ts";
 import GroupAdminUserPreRegistrationForm from "./components/GroupAdminUserPreRegistrationForm.tsx";
 import usePermissions from "../../../authentication/hooks/usePermissions.ts";
 import {PermissionType} from "../../../authentication/dto/PermissionType.ts";
+import useLocalizedDateTime from "../../../common/localization/hooks/useLocalizedDateTime.tsx";
 
 export default function GroupAdminDashboard() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,11 +37,11 @@ export default function GroupAdminDashboard() {
   const [expiresAt, setExpiresAt] = useState<Date>(new Date());
 
   const notification = useNotification();
-  const dialog = useDialog();
   const navigate = useNavigate();
   const authJsonFetch = useAuthJsonFetch();
   const authFetch = useAuthFetch();
   const {loading: permissionsLoading, groupPermissions} = usePermissions();
+  const getLocalizedDateTime = useLocalizedDateTime();
 
   const openErrorNotification = (message: string) => notification.openNotification({
     type: "error", vertical: "top", horizontal: "center", message: message
@@ -154,7 +151,6 @@ export default function GroupAdminDashboard() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setLoading(true);
     const defaultError = "Failed to upload user data";
     if (!groupId) {
       return;
@@ -164,40 +160,40 @@ export default function GroupAdminDashboard() {
       return;
     }
     try {
+      setLoading(true);
+      const userTimezone = encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      let fileName =
+        `pre-registration-${selectedProject?.name}-${getLocalizedDateTime(new Date())}`;
+      // @ts-expect-error replaceAll does in fact exist here on type string
+      fileName = fileName.trim().toLowerCase().replaceAll(" ", "_").replaceAll(".", "")
+        .concat(".xlsx");
+
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("projectId", selectedProject.projectId.toString());
       formData.append("questionnaireId", selectedQuestionnaire.id.toString());
       formData.append("expiresAt", formatISO(expiresAt));
       const response = await authFetch({
-        path: `groups/${groupId}/pre-register/users`,
+        path: `groups/${groupId}/pre-register/users?timeZone=${userTimezone}`,
         method: 'POST',
         body: formData
-      }).then(res => !res.error ? res.json() : res);
-      if (!response || response.status > 399 || !response.data) {
+      });
+      if (!response || response.status > 399) {
         openErrorNotification(response?.error ?? defaultError);
         return;
       }
-      setSelectedFile(null);
-      setExpiresAt(new Date());
-      handleSuccess(response.data as PreRegisterUsersReportDto);
+      const blob = await response?.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
     } catch (error) {
       openErrorNotification(defaultError);
     } finally {
       setLoading(false);
     }
-  }
-
-  function handleSuccess(reportDto: PreRegisterUsersReportDto) {
-    dialog.openDialog({
-      oneActionOnly: true, confirmText: "Ok", onConfirm: () => {
-      },
-      content: <UserPreRegistrationReport
-        totalUsers={reportDto.totalUsers}
-        invitedUsers={reportDto.invitedUsers}
-        updatedUsers={reportDto.updatedUsers}
-        failedUsers={reportDto.failedUsers}/>
-    });
   }
 
   const handleBackClick = () => {

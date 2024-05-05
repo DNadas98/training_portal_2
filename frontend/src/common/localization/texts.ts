@@ -195,7 +195,6 @@ export const texts = {
       "datapreparator": "Data Preparator",
       "external_questionnaire": "External Questionnaire",
       "external_failure": "External Failure",
-      "completion_email": "Completion Email",
       "no_found": "No filled out questionnaires were found",
       "failed_to_load_statistics_error": "Failed to load questionnaire statistics",
       "failed_to_download_statistics_error": "Failed to download statistics"
@@ -451,7 +450,6 @@ export const texts = {
       "datapreparator": "Adatelőkészítő",
       "external_questionnaire": "Gyakorló kérdőív",
       "external_failure": "Gyakorló meghiúsulás",
-      "completion_email": "Értesítő email",
       "no_found": "Nem található listaelem",
       "failed_to_load_statistics_error": "A statisztikák betöltése során hiba történt",
       "failed_to_download_statistics_error": "A statisztikák letöltése során hiba történt"
