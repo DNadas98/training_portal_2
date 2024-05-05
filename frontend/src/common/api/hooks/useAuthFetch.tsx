@@ -38,7 +38,12 @@ export default function useAuthFetch() {
       let httpResponse: Response = await authenticatedFetch(
         `${baseUrl}/${request.path}`, requestConfig, accessToken);
       if (httpResponse.status > 399) {
-        let responseObject = await httpResponse?.json();
+        let responseObject;
+        try {
+          responseObject = await httpResponse?.json();
+        } catch (e) {
+          return httpResponse;
+        }
 
         // Refresh if the access token is expired, and try to re-fetch
         if (responseObject?.isAccessTokenExpired) {
@@ -55,10 +60,14 @@ export default function useAuthFetch() {
 
         // If still unauthorized, log out
         if (httpResponse.status === 401) {
-          responseObject = await httpResponse?.json();
+          try {
+            responseObject = await httpResponse?.json();
+          } catch (e) {
+            return await notifyAndLogout(httpResponse, defaultError);
+          }
           return await notifyAndLogout(httpResponse, responseObject?.error);
         } else {
-          return responseObject;
+          return httpResponse;
         }
       }
       return httpResponse;

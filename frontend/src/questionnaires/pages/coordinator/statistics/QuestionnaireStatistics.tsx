@@ -192,7 +192,8 @@ export default function QuestionnaireStatistics() {
         contentType: "application/*"
       });
       if (!response || response.status > 399) {
-        handleErrorNotification(response?.error ?? defaultError);
+        const json = await response.json();
+        handleErrorNotification(json?.error ?? defaultError);
         return;
       }
       const blob = await response?.blob();
