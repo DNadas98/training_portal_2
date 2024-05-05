@@ -210,7 +210,8 @@ export default function AdminDashboard() {
         body: formData
       });
       if (!response || response.status > 399) {
-        openErrorNotification(response?.error ?? defaultError);
+        const json = await response.json();
+        openErrorNotification(json?.error ?? defaultError);
         return;
       }
       const blob = await response?.blob();
