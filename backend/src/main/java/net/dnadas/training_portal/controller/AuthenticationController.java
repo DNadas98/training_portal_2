@@ -44,7 +44,7 @@ public class AuthenticationController {
       throw new InvalidCredentialsException();
     }
     preRegistrationService.checkPreRegistration(invitationCodeUuid);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.OK).body(Map.of("message","OK"));
   }
 
   @PostMapping("/preregistration-complete")
